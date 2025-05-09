@@ -1,13 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import TabLayout from './app/(tabs)/_layout';
-
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import TabLayout from "./app/(tabs)/_layout";
+import SplashScreen from "./app/SplashScreen";
+import { use, useEffect, useState } from "react";
 
 export default function App() {
+  const [isSplashVisible, setSplashVisible] = useState(true);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setSplashVisible(false);
+    }, 3000); // 3 seconds
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <NavigationContainer style={styles.container}>
-      <TabLayout />
+      {isSplashVisible ? <SplashScreen /> : <TabLayout />}
       <StatusBar style="auto" />
     </NavigationContainer>
   );
@@ -16,8 +26,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
