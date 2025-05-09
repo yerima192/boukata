@@ -1,26 +1,21 @@
-//import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-
-// create a component
+import React from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native'; 
+import { SafeAreaView } from 'react-native-safe-area-context'; 
 const HomeScreen = () => {
     return (
-        <View style={styles.container}>
-            <Text>HomeScreen</Text>
-            
-        </View>
+        <SafeAreaView style={styles.safeArea}>
+
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+
+            </ScrollView>
+        </SafeAreaView>
     );
 };
-
-// define your styles
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
         backgroundColor: '#FAFAFA',
     },
-});
 
-//make this component available to the app
+});
 export default HomeScreen;

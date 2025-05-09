@@ -1,200 +1,243 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Animated,
-  Dimensions,
-  Platform
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-
-// Vous devrez installer ces icônes:
-// npm install react-native-vector-icons
-// puis: npx react-native link react-native-vector-icons
-import Icon from 'react-native-vector-icons/Ionicons';
+import React from 'react';
+import { View, Text, Image, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { FontAwesome, FontAwesome5, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
 const Footer = () => {
-  const navigation = useNavigation();
-  const [selectedTab, setSelectedTab] = useState('home');
-  
-  // Animation pour l'indicateur
-  const slideAnim = React.useRef(new Animated.Value(0)).current;
-  
-  const handleTabPress = (tabName) => {
-    setSelectedTab(tabName);
-    
-    // Définir la position de l'animation selon l'onglet
-    let toValue = 0;
-    switch(tabName) {
-      case 'home':
-        toValue = 0;
-        break;
-      case 'categories':
-        toValue = width / 5;
-        break;
-      case 'cart':
-        toValue = (width / 5) * 2;
-        break;
-      case 'favorites':
-        toValue = (width / 5) * 3;
-        break;
-      case 'profile':
-        toValue = (width / 5) * 4;
-        break;
-    }
-    
-    // Animer le déplacement de l'indicateur
-    Animated.spring(slideAnim, {
-      toValue: toValue,
-      friction: 8,
-      tension: 100,
-      useNativeDriver: true,
-    }).start();
-    
-    // Naviguer vers l'écran approprié
-    // navigation.navigate(tabName);
-    console.log(`Navigating to: ${tabName}`);
-  };
-  
-  // Badge de notification pour le panier
-  const cartItemCount = 3; // Sera dynamique dans une vraie app
-  
-  // Rendre chaque élément de tab
-  const renderTabItem = (iconName, activeIconName, tabName, label, badgeCount = null) => {
-    const isActive = selectedTab === tabName;
-    
-    return (
-      <TouchableOpacity
-        style={styles.tabItem}
-        onPress={() => handleTabPress(tabName)}
-        activeOpacity={0.7}
-      >
-        <View style={styles.tabIconContainer}>
-          <Icon
-            name={isActive ? activeIconName : iconName}
-            size={24}
-            color={isActive ? '#E7BA06' : '#FFFFFF'}
-          />
-          
-          {badgeCount !== null && badgeCount > 0 && (
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>{badgeCount > 9 ? '9+' : badgeCount}</Text>
+  return (
+    <ScrollView>
+      <View style={styles.footerContainer}>
+        {/* Section des logos de paiement */}
+        <View style={styles.paymentSection}>
+          <View style={styles.paymentLogosContainer}>
+            <View style={styles.paymentLogo}>
+              <FontAwesome name="cc-visa" size={24} color="white" />
             </View>
-          )}
+            <View style={styles.paymentLogo}>
+              <FontAwesome name="cc-mastercard" size={24} color="white" />
+            </View>
+            <View style={styles.paymentLogo}>
+              <FontAwesome name="cc-paypal" size={24} color="white" />
+            </View>
+            <View style={styles.paymentLogo}>
+              <FontAwesome name="cc-stripe" size={24} color="white" />
+            </View>
+            <View style={styles.paymentLogo}>
+              <FontAwesome name="credit-card" size={24} color="white" />
+            </View>
+          </View>
+        </View>
+
+        {/* Section centrale blanche chevauchée */}
+        <View style={styles.komipaySection}>
+          <View style={styles.komipayContent}>
+            <View style={styles.logoContainer}>
+              <FontAwesome5 name="shield-alt" size={36} color="#010080" />
+            </View>
+            <Text style={styles.komipayText}>Paiement sécurisé et fiable par Komipay !</Text>
+          </View>
+        </View>
+
+        {/* Séparateur */}
+        <View style={styles.separator} />
+
+        {/* Section titre et sous-titre */}
+        <View style={styles.brandSection}>
+          <Text style={styles.brandTitle}>Boukata-ta</Text>
+          <Text style={styles.brandSubtitle}>Simplifier votre quotidien !</Text>
+        </View>
+
+        {/* Grille de liens responsive */}
+        <View style={styles.linksGrid}>
+          {/* Colonne 1 : À propos */}
+          <View style={styles.column}>
+            <Text style={styles.columnTitle}>À propos</Text>
+            <Text style={styles.link}>Découvrez notre plateforme de commerce en ligne, où qualité et service rapide sont notre priorité.</Text>
+          </View>
+
+          {/* Colonne 2 : Liens utiles */}
+          <View style={styles.column}>
+            <Text style={styles.columnTitle}>Liens utiles</Text>
+            <Text style={styles.link}>Boutique</Text>
+            <Text style={styles.link}>Supermarché</Text>
+            <Text style={styles.link}>Restaurant</Text>
+            <Text style={styles.link}>Hôtel</Text>
+          </View>
+
+          {/* Colonne 3 : Contact */}
+          <View style={styles.column}>
+            <Text style={styles.columnTitle}>Contact</Text>
+            <Text style={styles.link}>
+              <MaterialCommunityIcons name="email-outline" size={16} /> contact@boukata-ta.com
+            </Text>
+            <Text style={styles.link}>
+              <MaterialCommunityIcons name="phone" size={16} /> +33 1 23 45 67 89
+            </Text>
+            <Text style={styles.link}>
+              <MaterialCommunityIcons name="map-marker" size={16} /> Paris, France
+            </Text>
+          </View>
+
+          {/* Colonne 4 : Réseaux sociaux */}
+          <View style={styles.column}>
+            <Text style={styles.columnTitle}>Suivez-nous</Text>
+            <View style={styles.socialIconsContainer}>
+              <View style={styles.socialIcon}>
+                <FontAwesome name="facebook" size={24} color="#010080" />
+              </View>
+              <View style={styles.socialIcon}>
+                <FontAwesome6 name="tiktok" size={24} color="#010080" />
+              </View>
+              <View style={styles.socialIcon}>
+                <FontAwesome name="linkedin" size={24} color="#010080" />
+              </View>
+            </View>
+          </View>
+        </View>
+
+        {/* Copyright */}
+        <View style={styles.copyright}>
+          <Text style={styles.copyrightText}>© 2025 Boukata-ta. Tous droits réservés.</Text>
         </View>
         
-        <Text style={[
-          styles.tabLabel,
-          {color: isActive ? '#E7BA06' : '#FFFFFF'}
-        ]}>
-          {label}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-  
-  return (
-    <View style={styles.container}>
-      {/* Un design attrayant avec une ligne légèrement incurvée en haut */}
-      <View style={styles.topCurve} />
-      
-      {/* Indicateur animé qui se déplace sous l'onglet actif */}
-      <Animated.View
-        style={[
-          styles.activeIndicator,
-          {transform: [{translateX: slideAnim}]}
-        ]}
-      />
-      
-      {/* Contenu du footer avec les onglets */}
-      <View style={styles.tabsContainer}>
-        {renderTabItem('home-outline', 'home', 'home', 'Accueil')}
-        {renderTabItem('grid-outline', 'grid', 'categories', 'Catégories')}
-        {renderTabItem('cart-outline', 'cart', 'cart', 'Panier', cartItemCount)}
-        {renderTabItem('heart-outline', 'heart', 'favorites', 'Favoris')}
-        {renderTabItem('person-outline', 'person', 'profile', 'Compte')}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
-// Définition des styles
 const styles = StyleSheet.create({
-  container: {
+  footerContainer: {
     width: '100%',
-    height: 70,
-    backgroundColor: '#010080', // Bleu foncé
-    position: 'absolute',
-    bottom: 0,
-    borderTopLeftRadius: 0,
-    borderTopRightRadius: 0,
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -3 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0, // Ajustement pour iOS
+    backgroundColor: '#f8f9fa',
+    paddingBottom: 10,
   },
-  topCurve: {
-    position: 'absolute',
-    top: -1,
-    left: 0,
-    right: 0,
-    height: 1,
-    backgroundColor: 'rgba(231, 186, 6, 0.3)', // Jaune doré transparent
+  paymentSection: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 20,
+    alignItems: 'center',
   },
-  activeIndicator: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: width / 5,
-    height: 3,
-    backgroundColor: '#E7BA06', // Jaune doré
-    borderRadius: 3,
+  paymentLogosContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 15,
   },
-  tabsContainer: {
-    flex: 1,
+  paymentLogo: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  komipaySection: {
+    alignItems: 'center',
+    marginTop: -25,
+    paddingHorizontal: 20,
+  },
+  komipayContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 15,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+    width: '100%',
+    maxWidth: 500,
   },
-  tabItem: {
+  logoContainer: {
+    backgroundColor: '#E7BA06',
+    borderRadius: 25,
+    width: 50,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 15,
+  },
+  komipayText: {
+    fontSize: 16,
     flex: 1,
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabIconContainer: {
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  tabLabel: {
-    fontSize: 10,
-    marginTop: 4,
-    fontWeight: '500',
-  },
-  badge: {
-    position: 'absolute',
-    top: -5,
-    right: -8,
-    backgroundColor: '#E7BA06', // Jaune doré
-    borderRadius: 10,
-    minWidth: 18,
-    height: 18,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderWidth: 1.5,
-    borderColor: '#010080', // Bordure bleue
-  },
-  badgeText: {
-    color: '#010080', // Texte bleu
-    fontSize: 10,
+    color: '#010080',
     fontWeight: 'bold',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#E0E0E0',
+    marginVertical: 25,
+    marginHorizontal: 20,
+  },
+  brandSection: {
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  brandTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#010080',
+    marginBottom: 5,
+  },
+  brandSubtitle: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    color: '#E7BA06',
+  },
+  linksGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    paddingHorizontal: 15,
+    marginBottom: 30,
+  },
+  column: {
+    width: width < 768 ? '45%' : '22%',
+    marginBottom: 20,
+  },
+  columnTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#010080',
+    marginBottom: 15,
+    paddingBottom: 5,
+    borderBottomWidth: 2,
+    borderBottomColor: '#E7BA06',
+    width: '75%',
+  },
+  link: {
+    fontSize: 14,
+    color: '#505050',
+    marginBottom: 8,
+  },
+  socialIconsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
+    marginTop: 5,
+  },
+  socialIcon: {
+    backgroundColor: '#E7BA06',
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  copyright: {
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+    paddingTop: 15,
+    alignItems: 'center',
+  },
+  copyrightText: {
+    fontSize: 12,
+    color: '#707070',
   },
 });
 
