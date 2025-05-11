@@ -1,26 +1,29 @@
-import React from 'react';
-import { Platform, View, StyleSheet, Pressable } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { BlurView } from 'expo-blur';
-import Animated, { useAnimatedStyle, withSpring } from 'react-native-reanimated';
+import React from "react";
+import { Platform, View, StyleSheet, Pressable } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
+import { BlurView } from "expo-blur";
+import Animated, {
+  useAnimatedStyle,
+  withSpring,
+} from "react-native-reanimated";
 
-import HomeScreen from './screens/HomeScreen';
-import MarcherScreen from './screens/MarcherScreen';
-import VendeurScreen from './screens/VendeurScreen';
-import FavorisScreen from './screens/FavorisScreen';
-import CompteScreen from './screens/CompteScreen';
+import HomeScreen from "./screens/HomeScreen";
+import MarcherScreen from "./screens/MarcherScreen";
+import VendeurScreen from "./screens/VendeurScreen";
+import FavorisScreen from "./screens/FavorisScreen";
+import CompteScreen from "./screens/CompteScreen";
 
 // Nouvelles couleurs
 const COLORS = {
-  primary: '#E7BA06', // Jaune doré
-  secondary: '#010080', // Bleu marine foncé
-  background: '#FFFFFF',
-  card: 'rgba(255, 255, 255, 0.8)',
-  text: '#010080',
-  border: 'rgba(1, 0, 128, 0.1)',
-  notification: '#E7BA06',
-  inactive: 'rgba(1, 0, 128, 0.5)',
+  primary: "#E7BA06", // Jaune doré
+  secondary: "#010080", // Bleu marine foncé
+  background: "#FFFFFF",
+  card: "rgba(255, 255, 255, 0.8)",
+  text: "#010080",
+  border: "rgba(1, 0, 128, 0.1)",
+  notification: "#E7BA06",
+  inactive: "rgba(1, 0, 128, 0.5)",
 };
 
 const Tab = createBottomTabNavigator();
@@ -28,7 +31,7 @@ const Tab = createBottomTabNavigator();
 // Composant personnalisé pour les tabs avec animation - correction pour assurer la navigation
 const CustomTab = ({ children, onPress, accessibilityState }) => {
   const focused = accessibilityState?.selected || false;
-  
+
   // Animation pour l'indicateur
   const animatedStyles = useAnimatedStyle(() => {
     return {
@@ -38,20 +41,13 @@ const CustomTab = ({ children, onPress, accessibilityState }) => {
   });
 
   return (
-    <Pressable 
-      onPress={onPress} 
+    <Pressable
+      onPress={onPress}
       style={styles.tabContainer}
       android_ripple={{ color: COLORS.border, borderless: true }}
     >
-      <Animated.View 
-        style={[
-          styles.tabIndicator, 
-          animatedStyles
-        ]} 
-      />
-      <View style={styles.tab}>
-        {children}
-      </View>
+      <Animated.View style={[styles.tabIndicator, animatedStyles]} />
+      <View style={styles.tab}>{children}</View>
     </Pressable>
   );
 };
@@ -59,10 +55,14 @@ const CustomTab = ({ children, onPress, accessibilityState }) => {
 // Composant personnalisé pour l'onglet central
 const CenterTab = ({ children, onPress }) => {
   return (
-    <Pressable 
-      onPress={onPress} 
+    <Pressable
+      onPress={onPress}
       style={styles.centerTabContainer}
-      android_ripple={{ color: COLORS.secondary, borderless: false, radius: 28 }}
+      android_ripple={{
+        color: COLORS.secondary,
+        borderless: false,
+        radius: 28,
+      }}
     >
       {children}
     </Pressable>
@@ -79,15 +79,15 @@ export default function TabLayout() {
         tabBarShowLabel: true,
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: '600',
+          fontWeight: "600",
           marginBottom: 4,
         },
         tabBarStyle: {
-          position: 'absolute',
+          position: "absolute",
           height: 90,
           borderTopWidth: 0,
           elevation: 0,
-          backgroundColor: Platform.OS === 'ios' ? 'transparent' : COLORS.card,
+          backgroundColor: Platform.OS === "ios" ? "transparent" : COLORS.card,
           ...Platform.select({
             ios: {
               shadowColor: COLORS.secondary,
@@ -104,16 +104,21 @@ export default function TabLayout() {
           paddingHorizontal: 10,
         },
         tabBarButton: (props) => <CustomTab {...props} />,
-        tabBarBackground: () => (Platform.OS === 'ios' ? (
-            <BlurView 
-              tint="light" 
-              intensity={80} 
+        tabBarBackground: () =>
+          Platform.OS === "ios" ? (
+            <BlurView
+              tint="light"
+              intensity={80}
               style={StyleSheet.absoluteFill}
             >
-              <View style={[StyleSheet.absoluteFill, { backgroundColor: 'rgba(255,255,255,0.7)' }]} />
+              <View
+                style={[
+                  StyleSheet.absoluteFill,
+                  { backgroundColor: "rgba(255,255,255,0.7)" },
+                ]}
+              />
             </BlurView>
-          ) : null
-        ),
+          ) : null,
       }}
     >
       <Tab.Screen
@@ -121,10 +126,10 @@ export default function TabLayout() {
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "home" : "home-outline"} 
-              size={28} 
-              color={color} 
+            <Ionicons
+              name={focused ? "home" : "home-outline"}
+              size={28}
+              color={color}
             />
           ),
         }}
@@ -134,10 +139,10 @@ export default function TabLayout() {
         component={MarcherScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "storefront" : "storefront-outline"} 
-              size={28} 
-              color={color} 
+            <Ionicons
+              name={focused ? "storefront" : "storefront-outline"}
+              size={28}
+              color={color}
             />
           ),
         }}
@@ -148,25 +153,27 @@ export default function TabLayout() {
         options={{
           tabBarIcon: ({ color }) => (
             <View style={styles.centerIconContainer}>
-              <FontAwesome5 name="user-tie" size={24} color={COLORS.background} />
+              <FontAwesome5
+                name="user-tie"
+                size={24}
+                color={COLORS.background}
+              />
             </View>
           ),
           tabBarButton: (props) => (
-            <CenterTab onPress={props.onPress}>
-              {props.children}
-            </CenterTab>
+            <CenterTab onPress={props.onPress}>{props.children}</CenterTab>
           ),
         }}
       />
       <Tab.Screen
-        name="Favoris"
+        name="Pannier"
         component={FavorisScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "heart" : "heart-outline"} 
-              size={26} 
-              color={color} 
+            <Ionicons
+              name={focused ? "cart" : "cart-outline"}
+              size={26}
+              color={color}
             />
           ),
         }}
@@ -176,10 +183,10 @@ export default function TabLayout() {
         component={CompteScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons 
-              name={focused ? "person-circle" : "person-circle-outline"} 
-              size={28} 
-              color={color} 
+            <Ionicons
+              name={focused ? "person-circle" : "person-circle-outline"}
+              size={28}
+              color={color}
             />
           ),
         }}
@@ -191,16 +198,16 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   tabContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   tab: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   tabIndicator: {
-    position: 'absolute',
+    position: "absolute",
     top: 10,
     width: 6,
     height: 6,
@@ -208,16 +215,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
   },
   centerTabContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   centerIconContainer: {
     width: 56,
     height: 56,
     borderRadius: 28,
     backgroundColor: COLORS.secondary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: 28,
     ...Platform.select({
       ios: {
