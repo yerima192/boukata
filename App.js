@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import TabLayout from "./app/(tabs)/_layout";
 import SplashScreen from "./app/SplashScreen";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function App() {
   const [isSplashVisible, setSplashVisible] = useState(true);
