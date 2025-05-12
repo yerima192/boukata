@@ -87,7 +87,7 @@ export default function TabLayout() {
           height: 90,
           borderTopWidth: 0,
           elevation: 0,
-          backgroundColor: Platform.OS === "ios" ? "transparent" : COLORS.card,
+          // backgroundColor: Platform.OS === "ios" ? "transparent" : COLORS.card,
           ...Platform.select({
             ios: {
               shadowColor: COLORS.secondary,
@@ -122,7 +122,7 @@ export default function TabLayout() {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="Accueil"
         component={HomeScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (
@@ -135,7 +135,7 @@ export default function TabLayout() {
         }}
       />
       <Tab.Screen
-        name="Marché"
+        name="Achat"
         component={MarcherScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (

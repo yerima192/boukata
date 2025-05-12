@@ -552,17 +552,16 @@ const styles = StyleSheet.create({
   },
   paymentRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     marginBottom: 15,
-    flexWrap: "nowrap",
   },
   paymentMethod: {
     alignItems: "center",
     marginHorizontal: 5,
   },
   paymentLogoContainer: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
