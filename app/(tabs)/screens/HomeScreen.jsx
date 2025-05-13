@@ -24,6 +24,7 @@ import {
   AntDesign
 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
+import Footer from "../../components/Footer";
 
 const { width, height } = Dimensions.get("window");
 
@@ -180,6 +181,7 @@ const Header = ({ onMenuPress, onSearchPress, cartItemCount = 0 }) => {
   return (
     <LinearGradient
       colors={[COLORS.secondary, COLORS.secondaryDark]}
+      // colors={["#0F0F98", "#010080", "#00005A"]}
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 0 }}
       style={styles.header}
@@ -698,12 +700,14 @@ const HomeScreen = () => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        <HeroBanner />
+        {/* <HeroBanner />
         <ServiceQuickAccess />
         <TopStoresList />
         <CreateStorePromo />
         <PopularProductsList />
-        <Commitments />
+        <Commitments /> */}
+        {/* <Footer /> */}
+        <Text style={{padding: 12, fontWeight: 'bold',}}>Rejoignez le mouvement Boukata-ta et contribuez à construire le futur du travail.</Text>
       </ScrollView>
     </Wrapper>
   );
