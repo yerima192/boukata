@@ -7,6 +7,7 @@ const VendeurScreen = () => {
     return (
         <View style={styles.container}>
             <Text>VendeurScreen</Text>
+            <Text></Text>
         </View>
     );
 };

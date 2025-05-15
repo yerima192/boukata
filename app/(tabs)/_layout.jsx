@@ -17,7 +17,7 @@ import CompteScreen from "./screens/CompteScreen";
 // Nouvelles couleurs
 const COLORS = {
   primary: "#E7BA06", // Jaune doré
-  secondary: "#010080", // Bleu marine foncé
+  secondary: "#010080", 
   background: "#FFFFFF",
   card: "rgba(255, 255, 255, 0.8)",
   text: "#010080",

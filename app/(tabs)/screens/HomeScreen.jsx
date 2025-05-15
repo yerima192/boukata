@@ -43,7 +43,7 @@ const COLORS = {
   darkGray: "#757575",
   lightGray: "#E0E0E0",
   success: "#4CAF50", // Green for positive messages
-  error: "#F44336", // Red for errors
+  error: "#F44336", 
   background: "#FAFAFA"
 };
 
