@@ -700,14 +700,14 @@ const HomeScreen = () => {
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
-        {/* <HeroBanner />
+        <HeroBanner />
+        {/* 
         <ServiceQuickAccess />
         <TopStoresList />
         <CreateStorePromo />
         <PopularProductsList />
         <Commitments /> */}
         {/*  <Footer /> */}
-        <Text style={{padding: 12, fontWeight: 'bold',}}>Rejoignez le mouvement Boukata-ta et contribuez à construire le futur du travail.</Text>
       </ScrollView>
     </Wrapper>
   );
