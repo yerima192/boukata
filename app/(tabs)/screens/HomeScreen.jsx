@@ -701,8 +701,8 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <HeroBanner />
-        {/* 
         <ServiceQuickAccess />
+        {/* 
         <TopStoresList />
         <CreateStorePromo />
         <PopularProductsList />
