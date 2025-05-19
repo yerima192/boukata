@@ -25,6 +25,8 @@ import {
 } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Footer from "../../components/Footer";
+import Test from "../../TestScreen/TestAcces";
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -33,7 +35,7 @@ const COLORS = {
   primary: "#F57C00", // Orange for Boukata-Ta
   primaryLight: "#FFB74D",
   primaryDark: "#E65100",
-  secondary: "#1E3A8A", // Dark blue
+  secondary: "#1E3A8A", 
   secondaryLight: "#3B579D",
   secondaryDark: "#0F2361",
   tertiary: "#FFCC80", // Light orange
@@ -701,8 +703,9 @@ const HomeScreen = () => {
         showsVerticalScrollIndicator={false}
       >
         <HeroBanner />
-        <ServiceQuickAccess />
+        <Test />
         {/* 
+        <ServiceQuickAccess />
         <TopStoresList />
         <CreateStorePromo />
         <PopularProductsList />
