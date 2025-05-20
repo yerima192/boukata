@@ -113,7 +113,7 @@ const Test = () => {
       <View style={styles.pharmacySection}>
         <TouchableOpacity style={styles.pharmacyContainer}>
           <LinearGradient
-            colors={[COLORS.secondary, "#2563EB"]}
+            colors={['#479045', '#61a65e', '#3a7a3a']}
             style={styles.pharmacyContent}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
@@ -180,7 +180,8 @@ const styles = StyleSheet.create({
   serviceIconContainer: {
     width: 75,
     height: 75,
-    backgroundColor: COLORS.primary,
+    backgroundColor: "#010080",
+    // "#0F0F98", "#010080", "#00005A"
     borderRadius: 18,
     justifyContent: "center",
     alignItems: "center",

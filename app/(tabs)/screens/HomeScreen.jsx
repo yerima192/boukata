@@ -705,12 +705,12 @@ const HomeScreen = () => {
         <HeroBanner />
         <Test />
         {/* 
-        <ServiceQuickAccess />
         <TopStoresList />
+        <ServiceQuickAccess />
         <CreateStorePromo />
         <PopularProductsList />
         <Commitments /> */}
-        {/*  <Footer /> */}
+         {/* <Footer /> */}
       </ScrollView>
     </Wrapper>
   );
