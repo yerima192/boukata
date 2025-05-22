@@ -160,11 +160,10 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     zIndex: 3,
   },
-  // Komipay Section
   komipayContainer: {
     zIndex: 3,
-    paddingHorizontal: 20, // Apply horizontal padding directly here
-    paddingVertical: 20, // Apply vertical padding directly here
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
   komipayContent: {
     borderRadius: 16,
@@ -248,7 +247,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: "100%",
     overflow: "hidden",
-    backgroundColor: "#00005A", // Matches the end color of the gradient for a seamless transition
+    backgroundColor: "#00005A", 
   },
   curveInner: {
     position: "absolute",
@@ -257,14 +256,14 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: 100,
     left: "-25%",
-    backgroundColor: "#f8f9fa", // Matches the copyright section background
+    backgroundColor: "#f8f9fa",
     zIndex: 1,
   },
 
   // Copyright Section
   copyrightSection: {
     backgroundColor: "#f8f9fa",
-    paddingVertical: 20,
+    paddingVertical: 10,
     paddingHorizontal: 20,
     alignItems: "center",
   },
@@ -272,7 +271,7 @@ const styles = StyleSheet.create({
     color: "#010080",
     fontSize: 14,
     fontWeight: "500",
-    marginBottom: 5, // Added some spacing
+    marginBottom: 5,
   },
   madeInNigerText: {
     color: "#010080",
