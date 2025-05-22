@@ -710,7 +710,7 @@ const HomeScreen = () => {
         <CreateStorePromo />
         <PopularProductsList />
         <Commitments /> */}
-         {/* <Footer /> */}
+         <Footer />
       </ScrollView>
     </Wrapper>
   );
