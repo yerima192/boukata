@@ -12,21 +12,22 @@ import {
   FlatList,
   TextInput,
   ImageBackground,
-  Platform
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { 
-  MaterialIcons, 
-  FontAwesome5, 
-  Ionicons, 
+import {
+  MaterialIcons,
+  FontAwesome5,
+  Ionicons,
   MaterialCommunityIcons,
   Feather,
-  AntDesign
-} from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
+  AntDesign,
+} from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 import Footer from "../../components/Footer";
 import Test from "../../TestScreen/TestAcces";
-
+import Commitments from "../../components/Commitments";
+import Products from "../../components/Products";
 
 const { width, height } = Dimensions.get("window");
 
@@ -35,7 +36,7 @@ const COLORS = {
   primary: "#F57C00", // Orange for Boukata-Ta
   primaryLight: "#FFB74D",
   primaryDark: "#E65100",
-  secondary: "#1E3A8A", 
+  secondary: "#1E3A8A",
   secondaryLight: "#3B579D",
   secondaryDark: "#0F2361",
   tertiary: "#FFCC80", // Light orange
@@ -45,27 +46,27 @@ const COLORS = {
   darkGray: "#757575",
   lightGray: "#E0E0E0",
   success: "#4CAF50", // Green for positive messages
-  error: "#F44336", 
-  background: "#FAFAFA"
+  error: "#F44336",
+  background: "#FAFAFA",
 };
 
 const FONTS = {
   regular: {
-    fontFamily: 'System',
-    fontWeight: '400'
+    fontFamily: "System",
+    fontWeight: "400",
   },
   medium: {
-    fontFamily: 'System',
-    fontWeight: '500'
+    fontFamily: "System",
+    fontWeight: "500",
   },
   semiBold: {
-    fontFamily: 'System',
-    fontWeight: '600'
+    fontFamily: "System",
+    fontWeight: "600",
   },
   bold: {
-    fontFamily: 'System',
-    fontWeight: '700'
-  }
+    fontFamily: "System",
+    fontWeight: "700",
+  },
 };
 
 const SHADOWS = {
@@ -92,90 +93,112 @@ const SHADOWS = {
   },
 };
 
-// Services data
-const services = [
-  { id: "s1", name: "Boutique", icon: "shopping-bag", color: "#FF9800", iconFamily: "FontAwesome5" },
-  { id: "s2", name: "Supermarché", icon: "shopping-cart", color: "#4CAF50", iconFamily: "FontAwesome5" },
-  { id: "s3", name: "Restaurant", icon: "restaurant", color: "#F44336", iconFamily: "MaterialIcons" },
-  { id: "s4", name: "Hôtel", icon: "hotel", color: "#2196F3", iconFamily: "MaterialIcons" },
-  { id: "s5", name: "Pharmacie", icon: "medical-bag", color: "#9C27B0", iconFamily: "MaterialCommunityIcons" },
-  { id: "s6", name: "Faire un Don", icon: "heart", color: "#E91E63", iconFamily: "AntDesign" }
-];
-
 // Top boutiques
 const topStores = [
-  { id: "b1", name: "Fashion Factory", image: "https://via.placeholder.com/100/F57C00/FFFFFF?text=FF", rating: 4.8 },
-  { id: "b2", name: "Sidibe", image: "https://via.placeholder.com/100/1E3A8A/FFFFFF?text=S", rating: 4.5 },
-  { id: "b3", name: "Targui Store", image: "https://via.placeholder.com/100/4CAF50/FFFFFF?text=TS", rating: 4.7 },
-  { id: "b4", name: "Marhaba Dream", image: "https://via.placeholder.com/100/E91E63/FFFFFF?text=MD", rating: 4.6 },
-  { id: "b5", name: "NATURAH HOUSE", image: "https://via.placeholder.com/100/9C27B0/FFFFFF?text=NH", rating: 4.9 },
-  { id: "b6", name: "Top Wear", image: "https://via.placeholder.com/100/2196F3/FFFFFF?text=TW", rating: 4.4 }
+  {
+    id: "b1",
+    name: "Fashion Factory",
+    image: "https://via.placeholder.com/100/F57C00/FFFFFF?text=FF",
+    rating: 4.8,
+  },
+  {
+    id: "b2",
+    name: "Sidibe",
+    image: "https://via.placeholder.com/100/1E3A8A/FFFFFF?text=S",
+    rating: 4.5,
+  },
+  {
+    id: "b3",
+    name: "Targui Store",
+    image: "https://via.placeholder.com/100/4CAF50/FFFFFF?text=TS",
+    rating: 4.7,
+  },
+  {
+    id: "b4",
+    name: "Marhaba Dream",
+    image: "https://via.placeholder.com/100/E91E63/FFFFFF?text=MD",
+    rating: 4.6,
+  },
+  {
+    id: "b5",
+    name: "NATURAH HOUSE",
+    image: "https://via.placeholder.com/100/9C27B0/FFFFFF?text=NH",
+    rating: 4.9,
+  },
+  {
+    id: "b6",
+    name: "Top Wear",
+    image: "https://via.placeholder.com/100/2196F3/FFFFFF?text=TW",
+    rating: 4.4,
+  },
 ];
 
 // Popular products
 const popularProducts = [
-  { 
-    id: "p1", 
-    name: "Smartphone Pro XL", 
-    price: "299.99€", 
+  {
+    id: "p1",
+    name: "Smartphone Pro XL",
+    price: "299.99€",
     image: "https://via.placeholder.com/200/F57C00/FFFFFF?text=ProXL",
     store: "Targui Store",
     rating: 4.5,
-    sold: 135
+    sold: 135,
   },
-  { 
-    id: "p2", 
-    name: "Robe de soirée élégante", 
-    price: "89.99€", 
+  {
+    id: "p2",
+    name: "Robe de soirée élégante",
+    price: "89.99€",
     image: "https://via.placeholder.com/200/1E3A8A/FFFFFF?text=Robe",
     store: "Fashion Factory",
     rating: 4.8,
-    sold: 87
+    sold: 87,
   },
-  { 
-    id: "p3", 
-    name: "Crème hydratante naturelle", 
-    price: "24.50€", 
+  {
+    id: "p3",
+    name: "Crème hydratante naturelle",
+    price: "24.50€",
     image: "https://via.placeholder.com/200/4CAF50/FFFFFF?text=Crème",
     store: "NATURAH HOUSE",
     rating: 4.9,
-    sold: 203
+    sold: 203,
   },
-  { 
-    id: "p4", 
-    name: "Montre connectée SportFit", 
-    price: "119.00€", 
+  {
+    id: "p4",
+    name: "Montre connectée SportFit",
+    price: "119.00€",
     image: "https://via.placeholder.com/200/9C27B0/FFFFFF?text=Montre",
     store: "Marhaba Dream",
     rating: 4.6,
     oldPrice: "149.00€",
-    sold: 56
-  }
+    sold: 56,
+  },
 ];
 
 // Promotional banners
 const promotions = [
-  { 
-    id: "promo1", 
-    title: "Créez votre boutique en ligne", 
-    description: "Faites le premier pas vers la création de votre propre boutique et découvrez des opportunités infinies",
+  {
+    id: "promo1",
+    title: "Créez votre boutique en ligne",
+    description:
+      "Faites le premier pas vers la création de votre propre boutique et découvrez des opportunités infinies",
     ctaText: "Démarrer maintenant",
-    image: "https://www.boukata-ta.com/BackgroundEraser_20250219_110003227.png"
+    image: "https://www.boukata-ta.com/BackgroundEraser_20250219_110003227.png",
   },
-  { 
-    id: "promo2", 
-    title: "Simplifiez votre quotidien", 
+  {
+    id: "promo2",
+    title: "Simplifiez votre quotidien",
     description: "Tous vos produits et services préférés en un seul endroit",
     ctaText: "Découvrir",
-    image: "https://www.boukata-ta.com/1736734826859.png"
+    image: "https://www.boukata-ta.com/1736734826859.png",
   },
-  { 
-    id: "promo3", 
-    title: "Livraison express", 
+  {
+    id: "promo3",
+    title: "Livraison express",
     description: "Recevez vos commandes en un temps record",
     ctaText: "Commander",
-    image: "https://via.placeholder.com/800x400/4CAF50/FFFFFF?text=Livraison+express"
-  }
+    image:
+      "https://via.placeholder.com/800x400/4CAF50/FFFFFF?text=Livraison+express",
+  },
 ];
 
 // App components
@@ -192,17 +215,21 @@ const Header = ({ onMenuPress, onSearchPress, cartItemCount = 0 }) => {
         <TouchableOpacity onPress={onMenuPress} style={styles.menuButton}>
           <MaterialIcons name="menu" size={28} color={COLORS.white} />
         </TouchableOpacity>
-        
+
         <View style={styles.logoContainer}>
           <Text style={styles.logoText}>Boukata-Ta</Text>
         </View>
-        
+
         <View style={styles.headerActions}>
           <TouchableOpacity style={styles.searchButton} onPress={onSearchPress}>
             <Ionicons name="search" size={22} color={COLORS.white} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.cartButton}>
-            <MaterialIcons name="shopping-cart" size={22} color={COLORS.white} />
+            <MaterialIcons
+              name="shopping-cart"
+              size={22}
+              color={COLORS.white}
+            />
             {cartItemCount > 0 && (
               <View style={styles.cartBadge}>
                 <Text style={styles.cartBadgeText}>{cartItemCount}</Text>
@@ -211,10 +238,12 @@ const Header = ({ onMenuPress, onSearchPress, cartItemCount = 0 }) => {
           </TouchableOpacity>
         </View>
       </View>
-      
+
       <TouchableOpacity style={styles.searchBar} onPress={onSearchPress}>
         <Ionicons name="search" size={18} color={COLORS.darkGray} />
-        <Text style={styles.searchPlaceholder}>Rechercher des produits, services...</Text>
+        <Text style={styles.searchPlaceholder}>
+          Rechercher des produits, services...
+        </Text>
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -222,24 +251,47 @@ const Header = ({ onMenuPress, onSearchPress, cartItemCount = 0 }) => {
 
 const Sidebar = ({ isOpen, onClose }) => {
   // Sidebar animation
-  const slideAnimation = useRef(new Animated.Value(isOpen ? 0 : -width * 0.8)).current;
+  const slideAnimation = useRef(
+    new Animated.Value(isOpen ? 0 : -width * 0.8)
+  ).current;
 
   useEffect(() => {
     Animated.timing(slideAnimation, {
       toValue: isOpen ? 0 : -width * 0.8,
       duration: 300,
-      useNativeDriver: true
+      useNativeDriver: true,
     }).start();
   }, [isOpen]);
-  
+
   // Sidebar menu options
   const menuOptions = [
-    { id: '1', title: 'Accueil', icon: 'home', iconType: 'MaterialIcons' },
-    { id: '2', title: 'Supermarché', icon: 'shopping-cart', iconType: 'FontAwesome5', hasDropdown: true },
-    { id: '3', title: 'Boutiques', icon: 'shopping-bag', iconType: 'FontAwesome5' },
-    { id: '4', title: 'Pharmacie', icon: 'medical-bag', iconType: 'MaterialCommunityIcons' },
-    { id: '5', title: 'Restaurant', icon: 'restaurant', iconType: 'MaterialIcons' },
-    { id: '6', title: 'Hôtel', icon: 'hotel', iconType: 'MaterialIcons' },
+    { id: "1", title: "Accueil", icon: "home", iconType: "MaterialIcons" },
+    {
+      id: "2",
+      title: "Supermarché",
+      icon: "shopping-cart",
+      iconType: "FontAwesome5",
+      hasDropdown: true,
+    },
+    {
+      id: "3",
+      title: "Boutiques",
+      icon: "shopping-bag",
+      iconType: "FontAwesome5",
+    },
+    {
+      id: "4",
+      title: "Pharmacie",
+      icon: "medical-bag",
+      iconType: "MaterialCommunityIcons",
+    },
+    {
+      id: "5",
+      title: "Restaurant",
+      icon: "restaurant",
+      iconType: "MaterialIcons",
+    },
+    { id: "6", title: "Hôtel", icon: "hotel", iconType: "MaterialIcons" },
   ];
 
   const [expandedOption, setExpandedOption] = useState(null);
@@ -254,42 +306,48 @@ const Sidebar = ({ isOpen, onClose }) => {
   };
 
   // Helper function to render the correct icon
-  const renderIcon = (iconName, iconType, size = 22, color = COLORS.secondary) => {
-    switch(iconType) {
-      case 'MaterialIcons':
+  const renderIcon = (
+    iconName,
+    iconType,
+    size = 22,
+    color = COLORS.secondary
+  ) => {
+    switch (iconType) {
+      case "MaterialIcons":
         return <MaterialIcons name={iconName} size={size} color={color} />;
-      case 'FontAwesome5':
+      case "FontAwesome5":
         return <FontAwesome5 name={iconName} size={size} color={color} />;
-      case 'Ionicons':
+      case "Ionicons":
         return <Ionicons name={iconName} size={size} color={color} />;
-      case 'MaterialCommunityIcons':
-        return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
-      case 'Feather':
+      case "MaterialCommunityIcons":
+        return (
+          <MaterialCommunityIcons name={iconName} size={size} color={color} />
+        );
+      case "Feather":
         return <Feather name={iconName} size={size} color={color} />;
-      case 'AntDesign':
+      case "AntDesign":
         return <AntDesign name={iconName} size={size} color={color} />;
       default:
         return <MaterialIcons name={iconName} size={size} color={color} />;
     }
   };
-  
+
   return (
     <>
       {isOpen && (
-        <TouchableOpacity 
+        <TouchableOpacity
           style={styles.backdrop}
           activeOpacity={1}
           onPress={onClose}
         />
       )}
-      
+
       <Animated.View
         style={[
           styles.sidebar,
-          { transform: [{ translateX: slideAnimation }] }
+          { transform: [{ translateX: slideAnimation }] },
         ]}
       >
-        
         <LinearGradient
           colors={[COLORS.secondary, COLORS.secondaryDark]}
           style={styles.sidebarHeader}
@@ -312,64 +370,85 @@ const Sidebar = ({ isOpen, onClose }) => {
           </View>
         </LinearGradient>
         <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.sidebarContent} showsVerticalScrollIndicator={false}>
-          {menuOptions.map(option => (
-            <View key={option.id}>
-              <TouchableOpacity 
-                style={[
-                  styles.menuItem,
-                  expandedOption === option.id && styles.menuItemActive
-                ]}
-                onPress={() => option.hasDropdown ? toggleDropdown(option.id) : null}
-              >
-                <View style={styles.menuItemIcon}>
-                  {renderIcon(option.icon, option.iconType)}
-                </View>
-                <Text style={styles.menuItemText}>{option.title}</Text>
-                {option.hasDropdown && (
-                  <View style={styles.dropdownIndicator}>
-                    <MaterialIcons 
-                      name={expandedOption === option.id ? "keyboard-arrow-up" : "keyboard-arrow-down"} 
-                      size={24} 
-                      color={COLORS.darkGray} 
-                    />
+          <View
+            style={styles.sidebarContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {menuOptions.map((option) => (
+              <View key={option.id}>
+                <TouchableOpacity
+                  style={[
+                    styles.menuItem,
+                    expandedOption === option.id && styles.menuItemActive,
+                  ]}
+                  onPress={() =>
+                    option.hasDropdown ? toggleDropdown(option.id) : null
+                  }
+                >
+                  <View style={styles.menuItemIcon}>
+                    {renderIcon(option.icon, option.iconType)}
+                  </View>
+                  <Text style={styles.menuItemText}>{option.title}</Text>
+                  {option.hasDropdown && (
+                    <View style={styles.dropdownIndicator}>
+                      <MaterialIcons
+                        name={
+                          expandedOption === option.id
+                            ? "keyboard-arrow-up"
+                            : "keyboard-arrow-down"
+                        }
+                        size={24}
+                        color={COLORS.darkGray}
+                      />
+                    </View>
+                  )}
+                </TouchableOpacity>
+
+                {option.hasDropdown && expandedOption === option.id && (
+                  <View style={styles.submenuContainer}>
+                    <TouchableOpacity style={styles.submenuItem}>
+                      <Text style={styles.submenuItemText}>Alimentation</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.submenuItem}>
+                      <Text style={styles.submenuItemText}>Électronique</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.submenuItem}>
+                      <Text style={styles.submenuItemText}>Mode</Text>
+                    </TouchableOpacity>
                   </View>
                 )}
-              </TouchableOpacity>
-              
-              {option.hasDropdown && expandedOption === option.id && (
-                <View style={styles.submenuContainer}>
-                  <TouchableOpacity style={styles.submenuItem}>
-                    <Text style={styles.submenuItemText}>Alimentation</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.submenuItem}>
-                    <Text style={styles.submenuItemText}>Électronique</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.submenuItem}>
-                    <Text style={styles.submenuItemText}>Mode</Text>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </View>
-          ))}
-        </View>
-        
-        <View style={styles.sidebarFooter}>
-          <TouchableOpacity style={styles.donateButton}>
-            <AntDesign name="heart" size={16} color={COLORS.white} style={styles.donateIcon} />
-            <Text style={styles.donateButtonText}>Faire un don</Text>
-          </TouchableOpacity>
-          
-          <View style={styles.supportActions}>
-            <TouchableOpacity style={styles.supportIcon}>
-              <FontAwesome5 name="whatsapp" size={22} color={COLORS.success} />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.supportIcon}>
-              <MaterialCommunityIcons name="robot" size={22} color={COLORS.primary} />
-            </TouchableOpacity>
+              </View>
+            ))}
           </View>
-        </View>
-       
+
+          <View style={styles.sidebarFooter}>
+            <TouchableOpacity style={styles.donateButton}>
+              <AntDesign
+                name="heart"
+                size={16}
+                color={COLORS.white}
+                style={styles.donateIcon}
+              />
+              <Text style={styles.donateButtonText}>Faire un don</Text>
+            </TouchableOpacity>
+
+            <View style={styles.supportActions}>
+              <TouchableOpacity style={styles.supportIcon}>
+                <FontAwesome5
+                  name="whatsapp"
+                  size={22}
+                  color={COLORS.success}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.supportIcon}>
+                <MaterialCommunityIcons
+                  name="robot"
+                  size={22}
+                  color={COLORS.primary}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
         </ScrollView>
       </Animated.View>
     </>
@@ -389,16 +468,16 @@ const SearchBar = ({ onPress }) => {
 
 const HeroBanner = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   // Auto-rotation for banners
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % promotions.length);
     }, 5000);
-    
+
     return () => clearInterval(timer);
   }, []);
-  
+
   return (
     <View style={styles.heroBannerContainer}>
       <FlatList
@@ -409,7 +488,8 @@ const HeroBanner = () => {
         keyExtractor={(item) => item.id}
         onMomentumScrollEnd={(event) => {
           const slideIndex = Math.floor(
-            event.nativeEvent.contentOffset.x / event.nativeEvent.layoutMeasurement.width
+            event.nativeEvent.contentOffset.x /
+              event.nativeEvent.layoutMeasurement.width
           );
           setActiveIndex(slideIndex);
         }}
@@ -422,15 +502,24 @@ const HeroBanner = () => {
               resizeMode="cover"
             >
               <LinearGradient
-                colors={['transparent', 'rgba(0,0,0,0.7)']}
+                colors={["transparent", "rgba(0,0,0,0.7)"]}
                 style={styles.heroBannerOverlay}
               >
                 <View style={styles.heroBannerContent}>
                   <Text style={styles.heroBannerTitle}>{item.title}</Text>
-                  <Text style={styles.heroBannerDescription}>{item.description}</Text>
+                  <Text style={styles.heroBannerDescription}>
+                    {item.description}
+                  </Text>
                   <TouchableOpacity style={styles.heroBannerButton}>
-                    <Text style={styles.heroBannerButtonText}>{item.ctaText}</Text>
-                    <MaterialIcons name="arrow-forward" size={16} color={COLORS.white} style={{marginLeft: 4}} />
+                    <Text style={styles.heroBannerButtonText}>
+                      {item.ctaText}
+                    </Text>
+                    <MaterialIcons
+                      name="arrow-forward"
+                      size={16}
+                      color={COLORS.white}
+                      style={{ marginLeft: 4 }}
+                    />
                   </TouchableOpacity>
                 </View>
               </LinearGradient>
@@ -438,66 +527,18 @@ const HeroBanner = () => {
           </View>
         )}
       />
-      
+
       <View style={styles.paginationContainer}>
         {promotions.map((_, index) => (
           <View
             key={index}
             style={[
               styles.paginationDot,
-              activeIndex === index && styles.paginationActiveDot
+              activeIndex === index && styles.paginationActiveDot,
             ]}
           />
         ))}
       </View>
-    </View>
-  );
-};
-
-const ServiceQuickAccess = () => {
-  // Helper function to render the correct icon
-  const renderServiceIcon = (iconName, iconFamily, color) => {
-    switch(iconFamily) {
-      case 'FontAwesome5':
-        return <FontAwesome5 name={iconName} size={22} color={COLORS.white} />;
-      case 'MaterialIcons':
-        return <MaterialIcons name={iconName} size={22} color={COLORS.white} />; 
-      case 'MaterialCommunityIcons':
-        return <MaterialCommunityIcons name={iconName} size={22} color={COLORS.white} />;
-      case 'AntDesign':
-        return <AntDesign name={iconName} size={22} color={COLORS.white} />;
-      default:
-        return <MaterialIcons name={iconName} size={22} color={COLORS.white} />;
-    }
-  };
-
-  return (
-    <View style={styles.serviceSection}>
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Accès Rapide</Text>
-        <TouchableOpacity>
-          <Text style={styles.viewAllText}>Voir tout</Text>
-        </TouchableOpacity>
-      </View>
-      
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={services}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.serviceItem}>
-            <LinearGradient
-              colors={[item.color, item.color + 'CC']}
-              style={styles.serviceIconContainer}
-            >
-              {renderServiceIcon(item.icon, item.iconFamily, COLORS.white)}
-            </LinearGradient>
-            <Text style={styles.serviceName}>{item.name}</Text>
-          </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.serviceList}
-      />
     </View>
   );
 };
@@ -509,10 +550,14 @@ const TopStoresList = () => {
         <Text style={styles.sectionTitle}>Top Boutiques</Text>
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllText}>Voir tout</Text>
-          <MaterialIcons name="arrow-forward" size={14} color={COLORS.primary} />
+          <MaterialIcons
+            name="arrow-forward"
+            size={14}
+            color={COLORS.primary}
+          />
         </TouchableOpacity>
       </View>
-      
+
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -521,7 +566,9 @@ const TopStoresList = () => {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.storeCard}>
             <Image source={{ uri: item.image }} style={styles.storeImage} />
-            <Text style={styles.storeName} numberOfLines={1}>{item.name}</Text>
+            <Text style={styles.storeName} numberOfLines={1}>
+              {item.name}
+            </Text>
             <View style={styles.ratingContainer}>
               <AntDesign name="star" size={12} color="#FFD700" />
               <Text style={styles.ratingText}>{item.rating}</Text>
@@ -541,10 +588,14 @@ const PopularProductsList = () => {
         <Text style={styles.sectionTitle}>Produits Populaires</Text>
         <TouchableOpacity style={styles.viewAllButton}>
           <Text style={styles.viewAllText}>Voir tout</Text>
-          <MaterialIcons name="arrow-forward" size={14} color={COLORS.primary} />
+          <MaterialIcons
+            name="arrow-forward"
+            size={14}
+            color={COLORS.primary}
+          />
         </TouchableOpacity>
       </View>
-      
+
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -553,19 +604,21 @@ const PopularProductsList = () => {
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.productCard}>
             <Image source={{ uri: item.image }} style={styles.productImage} />
-            
+
             <View style={styles.productInfo}>
-              <Text style={styles.productName} numberOfLines={2}>{item.name}</Text>
-              
+              <Text style={styles.productName} numberOfLines={2}>
+                {item.name}
+              </Text>
+
               <View style={styles.priceContainer}>
                 <Text style={styles.productPrice}>{item.price}</Text>
                 {item.oldPrice && (
                   <Text style={styles.oldPrice}>{item.oldPrice}</Text>
                 )}
               </View>
-              
+
               <Text style={styles.storeNameText}>{item.store}</Text>
-              
+
               <View style={styles.productFooter}>
                 <View style={styles.ratingContainer}>
                   <AntDesign name="star" size={12} color="#FFD700" />
@@ -573,9 +626,13 @@ const PopularProductsList = () => {
                 </View>
                 <Text style={styles.soldCount}>{item.sold} vendus</Text>
               </View>
-              
+
               <TouchableOpacity style={styles.addToCartButton}>
-                <MaterialIcons name="add-shopping-cart" size={16} color={COLORS.white} />
+                <MaterialIcons
+                  name="add-shopping-cart"
+                  size={16}
+                  color={COLORS.white}
+                />
                 <Text style={styles.addToCartText}>Ajouter</Text>
               </TouchableOpacity>
             </View>
@@ -598,80 +655,38 @@ const CreateStorePromo = () => {
       >
         <View style={styles.createStoreContent}>
           <View style={styles.createStoreTextContent}>
-            <Text style={styles.createStoreTitle}>Voulez-vous lancer votre boutique en ligne aujourd'hui ?</Text>
+            <Text style={styles.createStoreTitle}>
+              Voulez-vous lancer votre boutique en ligne aujourd'hui ?
+            </Text>
             <Text style={styles.createStoreDesc}>
-              Faites le premier pas vers la création de votre propre boutique en ligne et découvrez des opportunités infinies pour votre entreprise.
+              Faites le premier pas vers la création de votre propre boutique en
+              ligne et découvrez des opportunités infinies pour votre
+              entreprise.
             </Text>
             <TouchableOpacity style={styles.createStoreButton}>
-              <Text style={styles.createStoreButtonText}>Créer ma boutique</Text>
-              <MaterialIcons name="arrow-forward" size={16} color={COLORS.white} style={{ marginLeft: 8 }} />
+              <Text style={styles.createStoreButtonText}>
+                Créer ma boutique
+              </Text>
+              <MaterialIcons
+                name="arrow-forward"
+                size={16}
+                color={COLORS.white}
+                style={{ marginLeft: 8 }}
+              />
             </TouchableOpacity>
           </View>
           <View style={styles.createStoreImageContainer}>
-            <MaterialCommunityIcons name="store" size={60} color="rgba(255,255,255,0.3)" />
+            <MaterialCommunityIcons
+              name="store"
+              size={60}
+              color="rgba(255,255,255,0.3)"
+            />
           </View>
         </View>
       </LinearGradient>
     </TouchableOpacity>
   );
 };
-
-const Commitments = () => {
-  const commitments = [
-    {
-      id: "c1",
-      title: "Paiement Sécurisé",
-      description: "Votre sécurité est notre priorité.",
-      icon: "lock",
-      iconFamily: "FontAwesome5"
-    },
-    {
-      id: "c2",
-      title: "Livraison Rapide",
-      description: "Des livraisons express à votre porte.",
-      icon: "truck",
-      iconFamily: "FontAwesome5"
-    },
-    {
-      id: "c3",
-      title: "Support Client",
-      description: "Toujours là pour vous aider, 24/7.",
-      icon: "headset",
-      iconFamily: "FontAwesome5"
-    }
-  ];
-  
-  const renderIcon = (iconName, iconFamily) => {
-    switch(iconFamily) {
-      case 'FontAwesome5':
-        return <FontAwesome5 name={iconName} size={24} color={COLORS.primary} />;
-      case 'MaterialIcons':
-        return <MaterialIcons name={iconName} size={24} color={COLORS.primary} />;
-      default:
-        return <MaterialIcons name={iconName} size={24} color={COLORS.primary} />;
-    }
-  };
-  
-  return (
-    <View style={styles.commitmentsSection}>
-      <Text style={styles.sectionTitle}>Nos Engagements</Text>
-      
-      <View style={styles.commitmentsContainer}>
-        {commitments.map((item) => (
-          <View key={item.id} style={styles.commitmentCard}>
-            <View style={styles.commitmentIconContainer}>
-              {renderIcon(item.icon, item.iconFamily)}
-            </View>
-            <Text style={styles.commitmentTitle}>{item.title}</Text>
-            <Text style={styles.commitmentDesc}>{item.description}</Text>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-};
-
-
 // Main application component
 const HomeScreen = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -681,36 +696,34 @@ const HomeScreen = () => {
 
   return (
     <Wrapper style={styles.safeArea}>
- <StatusBar
+      <StatusBar
         backgroundColor={COLORS.secondary}
         barStyle={Platform.OS === "ios" ? "dark-content" : "light-content"}
       />
-      
-      <Header 
-        onMenuPress={() => setSidebarOpen(true)} 
+
+      <Header
+        onMenuPress={() => setSidebarOpen(true)}
         cartItemCount={cartItems}
         onSearchPress={() => setSearchActive(true)}
       />
-      
-      <Sidebar 
-        isOpen={sidebarOpen} 
-        onClose={() => setSidebarOpen(false)}
-      />
-      
-      <ScrollView 
-        style={styles.container} 
+
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+
+      <ScrollView
+        style={styles.container}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
         <HeroBanner />
         <Test />
-        {/* 
-        <TopStoresList />
-        <ServiceQuickAccess />
+        {/* je veux ça pour les boutique en ligne <TopStoresList /> */}
         <CreateStorePromo />
+        {/* 
         <PopularProductsList />
-        <Commitments /> */}
-         <Footer />
+         */}
+      <Products />
+        <Commitments />
+        <Footer />
       </ScrollView>
     </Wrapper>
   );
@@ -728,33 +741,33 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingBottom: 75, // Space for bottom navigation
   },
-  
+
   // Header styles
   header: {
-    paddingTop:Platform.OS === 'ios' ? 50 : 10,
+    paddingTop: Platform.OS === "ios" ? 50 : 10,
     paddingBottom: 15,
     paddingHorizontal: 16,
   },
   headerTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 10,
   },
   menuButton: {
     padding: 4,
   },
   logoContainer: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   logoText: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.white,
   },
   headerActions: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   searchButton: {
     marginRight: 12,
@@ -762,27 +775,27 @@ const styles = StyleSheet.create({
   },
   cartButton: {
     padding: 4,
-    position: 'relative',
+    position: "relative",
   },
   cartBadge: {
-    position: 'absolute',
+    position: "absolute",
     top: -5,
     right: -5,
     backgroundColor: COLORS.primary,
     borderRadius: 10,
     width: 18,
     height: 18,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   cartBadgeText: {
     color: COLORS.white,
     fontSize: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   searchBar: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.white,
     borderRadius: 8,
     paddingHorizontal: 12,
@@ -793,23 +806,23 @@ const styles = StyleSheet.create({
     marginLeft: 8,
     fontSize: 14,
   },
-  
+
   // Sidebar styles
   backdrop: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: "rgba(0,0,0,0.5)",
     zIndex: 10,
   },
   sidebar: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     width: width * 0.8,
-    height: '100%',
+    height: "100%",
     backgroundColor: COLORS.white,
     zIndex: 20,
     ...SHADOWS.large,
@@ -820,31 +833,31 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   sidebarHeaderContent: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   userInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   userAvatar: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: "rgba(255,255,255,0.2)",
     marginRight: 12,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   userName: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 4,
   },
   loginButton: {
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: "rgba(255,255,255,0.2)",
     paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 12,
@@ -861,8 +874,8 @@ const styles = StyleSheet.create({
     paddingBottom: 80, // Pour s'assurer que le contenu ne se chevauche pas avec le footer
   },
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 16,
     borderBottomWidth: 1,
@@ -873,7 +886,7 @@ const styles = StyleSheet.create({
   },
   menuItemIcon: {
     width: 30,
-    alignItems: 'center',
+    alignItems: "center",
     marginRight: 12,
   },
   menuItemText: {
@@ -900,7 +913,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   sidebarFooter: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
@@ -908,13 +921,13 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: COLORS.lightGray,
     backgroundColor: COLORS.white,
-    marginTop: 'auto'
+    marginTop: "auto",
   },
   donateButton: {
     backgroundColor: COLORS.primary,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 12,
     borderRadius: 8,
     marginBottom: 16,
@@ -925,61 +938,60 @@ const styles = StyleSheet.create({
   donateButtonText: {
     color: COLORS.white,
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   supportActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
   },
   supportIcon: {
     padding: 8,
   },
-  
+
   // Search Bar Component
   searchBarContainer: {
     margin: 16,
   },
   searchInputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.white,
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
     ...SHADOWS.small,
   },
-  
+
   // Hero Banner styles
   heroBannerContainer: {
     marginHorizontal: 16,
     marginTop: 1,
     marginBottom: 24,
-
   },
   heroBannerSlide: {
     width: width - 32,
     height: 180,
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   heroBannerImage: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'flex-end',
+    width: "100%",
+    height: "100%",
+    justifyContent: "flex-end",
   },
   heroBannerOverlay: {
-    height: '100%',
-    justifyContent: 'flex-end',
+    height: "100%",
+    justifyContent: "flex-end",
     padding: 16,
     borderRadius: 12,
   },
   heroBannerContent: {
-    width: '70%',
+    width: "70%",
   },
   heroBannerTitle: {
     color: COLORS.white,
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 6,
   },
   heroBannerDescription: {
@@ -993,18 +1005,18 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     paddingVertical: 8,
     paddingHorizontal: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
   },
   heroBannerButtonText: {
     color: COLORS.white,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   paginationContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 12,
   },
   paginationDot: {
@@ -1018,56 +1030,27 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.primary,
     width: 16,
   },
-  
-  // Service Section styles
-  serviceSection: {
-    marginBottom: 24,
-  },
   sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     marginBottom: 12,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.secondary,
   },
   viewAllButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   viewAllText: {
     color: COLORS.primary,
     fontSize: 14,
     marginRight: 4,
   },
-  serviceList: {
-    paddingLeft: 16,
-    paddingRight: 8,
-  },
-  serviceItem: {
-    alignItems: 'center',
-    marginRight: 16,
-    width: 80,
-  },
-  serviceIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 8,
-    ...SHADOWS.small,
-  },
-  serviceName: {
-    fontSize: 12,
-    color: COLORS.secondary,
-    textAlign: 'center',
-  },
-  
   // Top Stores Section styles
   storeSection: {
     marginBottom: 24,
@@ -1079,7 +1062,7 @@ const styles = StyleSheet.create({
   storeCard: {
     width: 100,
     marginRight: 12,
-    alignItems: 'center',
+    alignItems: "center",
   },
   storeImage: {
     width: 70,
@@ -1092,20 +1075,20 @@ const styles = StyleSheet.create({
   storeName: {
     fontSize: 13,
     color: COLORS.secondary,
-    textAlign: 'center',
-    fontWeight: '500',
+    textAlign: "center",
+    fontWeight: "500",
     marginBottom: 4,
   },
   ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   ratingText: {
     fontSize: 12,
     color: COLORS.darkGray,
     marginLeft: 4,
   },
-  
+
   // Products Section styles
   productsSection: {
     marginBottom: 24,
@@ -1119,39 +1102,39 @@ const styles = StyleSheet.create({
     marginRight: 16,
     backgroundColor: COLORS.white,
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     ...SHADOWS.small,
   },
   productImage: {
-    width: '100%',
+    width: "100%",
     height: 140,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   productInfo: {
     padding: 12,
   },
   productName: {
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: "500",
     color: COLORS.secondary,
     marginBottom: 6,
     height: 40,
   },
   priceContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 4,
   },
   productPrice: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: COLORS.primary,
     marginRight: 8,
   },
   oldPrice: {
     fontSize: 12,
     color: COLORS.darkGray,
-    textDecorationLine: 'line-through',
+    textDecorationLine: "line-through",
   },
   storeNameText: {
     fontSize: 12,
@@ -1159,9 +1142,9 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
   productFooter: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 10,
   },
   soldCount: {
@@ -1173,30 +1156,30 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingVertical: 6,
     paddingHorizontal: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   addToCartText: {
     color: COLORS.white,
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
     marginLeft: 4,
   },
-  
+
   // Create Store Promo styles
   createStorePromo: {
     marginHorizontal: 16,
     marginVertical: 24,
     borderRadius: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
     ...SHADOWS.medium,
   },
   createStoreGradient: {
     borderRadius: 12,
   },
   createStoreContent: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 16,
   },
   createStoreTextContent: {
@@ -1206,11 +1189,11 @@ const styles = StyleSheet.create({
   createStoreTitle: {
     color: COLORS.white,
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 8,
   },
   createStoreDesc: {
-    color: 'rgba(255,255,255,0.8)',
+    color: "rgba(255,255,255,0.8)",
     fontSize: 12,
     lineHeight: 18,
     marginBottom: 12,
@@ -1220,61 +1203,19 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignSelf: 'flex-start',
+    flexDirection: "row",
+    alignItems: "center",
+    alignSelf: "flex-start",
   },
   createStoreButtonText: {
     color: COLORS.white,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   createStoreImageContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     width: 80,
-  },
-  
-  // Commitments Section styles
-  commitmentsSection: {
-    marginHorizontal: 16,
-    marginBottom: 24,
-  },
-  commitmentsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 16,
-  },
-  commitmentCard: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    padding: 12,
-    marginHorizontal: 4,
-    alignItems: 'center',
-    ...SHADOWS.small,
-  },
-  commitmentIconContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(245,124,0,0.1)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  commitmentTitle: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: COLORS.secondary,
-    marginBottom: 4,
-    textAlign: 'center',
-  },
-  commitmentDesc: {
-    fontSize: 10,
-    color: COLORS.darkGray,
-    textAlign: 'center',
-    lineHeight: 14,
   },
 });
 
