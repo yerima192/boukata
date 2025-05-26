@@ -133,46 +133,6 @@ const topStores = [
   },
 ];
 
-// Popular products
-const popularProducts = [
-  {
-    id: "p1",
-    name: "Smartphone Pro XL",
-    price: "299.99€",
-    image: "https://via.placeholder.com/200/F57C00/FFFFFF?text=ProXL",
-    store: "Targui Store",
-    rating: 4.5,
-    sold: 135,
-  },
-  {
-    id: "p2",
-    name: "Robe de soirée élégante",
-    price: "89.99€",
-    image: "https://via.placeholder.com/200/1E3A8A/FFFFFF?text=Robe",
-    store: "Fashion Factory",
-    rating: 4.8,
-    sold: 87,
-  },
-  {
-    id: "p3",
-    name: "Crème hydratante naturelle",
-    price: "24.50€",
-    image: "https://via.placeholder.com/200/4CAF50/FFFFFF?text=Crème",
-    store: "NATURAH HOUSE",
-    rating: 4.9,
-    sold: 203,
-  },
-  {
-    id: "p4",
-    name: "Montre connectée SportFit",
-    price: "119.00€",
-    image: "https://via.placeholder.com/200/9C27B0/FFFFFF?text=Montre",
-    store: "Marhaba Dream",
-    rating: 4.6,
-    oldPrice: "149.00€",
-    sold: 56,
-  },
-];
 
 // Promotional banners
 const promotions = [
@@ -581,69 +541,6 @@ const TopStoresList = () => {
   );
 };
 
-const PopularProductsList = () => {
-  return (
-    <View style={styles.productsSection}>
-      <View style={styles.sectionHeader}>
-        <Text style={styles.sectionTitle}>Produits Populaires</Text>
-        <TouchableOpacity style={styles.viewAllButton}>
-          <Text style={styles.viewAllText}>Voir tout</Text>
-          <MaterialIcons
-            name="arrow-forward"
-            size={14}
-            color={COLORS.primary}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <FlatList
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        data={popularProducts}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.productCard}>
-            <Image source={{ uri: item.image }} style={styles.productImage} />
-
-            <View style={styles.productInfo}>
-              <Text style={styles.productName} numberOfLines={2}>
-                {item.name}
-              </Text>
-
-              <View style={styles.priceContainer}>
-                <Text style={styles.productPrice}>{item.price}</Text>
-                {item.oldPrice && (
-                  <Text style={styles.oldPrice}>{item.oldPrice}</Text>
-                )}
-              </View>
-
-              <Text style={styles.storeNameText}>{item.store}</Text>
-
-              <View style={styles.productFooter}>
-                <View style={styles.ratingContainer}>
-                  <AntDesign name="star" size={12} color="#FFD700" />
-                  <Text style={styles.ratingText}>{item.rating}</Text>
-                </View>
-                <Text style={styles.soldCount}>{item.sold} vendus</Text>
-              </View>
-
-              <TouchableOpacity style={styles.addToCartButton}>
-                <MaterialIcons
-                  name="add-shopping-cart"
-                  size={16}
-                  color={COLORS.white}
-                />
-                <Text style={styles.addToCartText}>Ajouter</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        )}
-        contentContainerStyle={styles.productsList}
-      />
-    </View>
-  );
-};
-
 const CreateStorePromo = () => {
   return (
     <TouchableOpacity style={styles.createStorePromo}>
@@ -718,9 +615,6 @@ const HomeScreen = () => {
         <Test />
         {/* je veux ça pour les boutique en ligne <TopStoresList /> */}
         <CreateStorePromo />
-        {/* 
-        <PopularProductsList />
-         */}
       <Products />
         <Commitments />
         <Footer />
@@ -1088,85 +982,6 @@ const styles = StyleSheet.create({
     color: COLORS.darkGray,
     marginLeft: 4,
   },
-
-  // Products Section styles
-  productsSection: {
-    marginBottom: 24,
-  },
-  productsList: {
-    paddingLeft: 16,
-    paddingRight: 8,
-  },
-  productCard: {
-    width: 180,
-    marginRight: 16,
-    backgroundColor: COLORS.white,
-    borderRadius: 12,
-    overflow: "hidden",
-    ...SHADOWS.small,
-  },
-  productImage: {
-    width: "100%",
-    height: 140,
-    resizeMode: "cover",
-  },
-  productInfo: {
-    padding: 12,
-  },
-  productName: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: COLORS.secondary,
-    marginBottom: 6,
-    height: 40,
-  },
-  priceContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 4,
-  },
-  productPrice: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: COLORS.primary,
-    marginRight: 8,
-  },
-  oldPrice: {
-    fontSize: 12,
-    color: COLORS.darkGray,
-    textDecorationLine: "line-through",
-  },
-  storeNameText: {
-    fontSize: 12,
-    color: COLORS.secondary,
-    marginBottom: 6,
-  },
-  productFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  soldCount: {
-    fontSize: 11,
-    color: COLORS.darkGray,
-  },
-  addToCartButton: {
-    backgroundColor: COLORS.primary,
-    borderRadius: 6,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  addToCartText: {
-    color: COLORS.white,
-    fontSize: 12,
-    fontWeight: "500",
-    marginLeft: 4,
-  },
-
   // Create Store Promo styles
   createStorePromo: {
     marginHorizontal: 16,

@@ -1,24 +1,34 @@
 //import liraries
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { View, Text, StyleSheet, Platform } from "react-native";
+import Footer from "../../components/Footer";
+import { SafeAreaView } from "react-native-safe-area-context";
+const COLORS = { 
+    background: "#FAFAFA",
+}
 
 // create a component
 const MarcherScreen = () => {
-    return (
-        <View style={styles.container}>
-            <Text>MarcherScreen</Text>
-        </View>
-    );
+  const Wrapper = Platform.OS === "android" ? SafeAreaView : View;
+  return (
+    <Wrapper style={styles.safeArea}>
+      <View style={styles.container}>
+        <Text>MarcherScreen</Text>
+        <Footer />
+      </View>
+    </Wrapper>
+  );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FAFAFA',
-    },
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+  },
+  container: {
+    flex: 1,
+  },
 });
 
 //make this component available to the app

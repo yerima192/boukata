@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: COLORS.primary, // Using the new primary color
+    color: COLORS.primary,
   },
 
   section: {
