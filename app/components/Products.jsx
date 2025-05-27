@@ -172,7 +172,7 @@ const Products = () => {
         )}
 
         <TouchableOpacity style={styles.favoriteButton}>
-          <AntDesign name="heart" size={14} color={COLORS.error} />
+          <AntDesign name="heart" size={14} color={COLORS.primary} />
         </TouchableOpacity>
       </View>
 
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 6,
     left: 6,
-    backgroundColor: COLORS.error,
+    backgroundColor: COLORS.secondary,
     paddingHorizontal: 6,
     paddingVertical: 3,
     borderRadius: 8,
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
   productName: {
     fontSize: 13,
     fontWeight: "600",
-    color: COLORS.primary, // Using the new primary color
+    color: "#333", // Using the new primary color
     marginBottom: 4,
     lineHeight: 16,
   },
@@ -351,7 +351,7 @@ const styles = StyleSheet.create({
   productPrice: {
     fontSize: 14,
     fontWeight: "bold",
-    color: COLORS.error, // Keeping original color for price, as it stands out well for value
+    color: COLORS.primary, // Using the new primary color
     marginBottom: 8,
   },
 

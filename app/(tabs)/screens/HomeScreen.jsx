@@ -616,7 +616,7 @@ const HomeScreen = () => {
         {/* je veux ça pour les boutique en ligne <TopStoresList /> */}
         <CreateStorePromo />
       <Products />
-        <Commitments />
+        {/* <Commitments /> */}
         <Footer />
       </ScrollView>
     </Wrapper>

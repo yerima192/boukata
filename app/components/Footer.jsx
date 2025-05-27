@@ -90,8 +90,8 @@ const Footer = () => {
                 />
               </View>
               <View style={styles.komipayTextContainer}>
-                <Text style={styles.komipayTitle}>
-                  Paiement sécurisé avec Komipay
+                <Text style={styles.komipayTitle} numberOfLines={2} >
+                  Mode de paiement avec Komipay
                 </Text>
                 <Text style={styles.komipaySubtitle}>
                   Plusieurs options pour faciliter vos achats
@@ -202,10 +202,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   komipayTitle: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
     color: "#FFFFFF",
     marginBottom: 5,
+    textAlign: "nowrap",
   },
   komipaySubtitle: {
     fontSize: 14,
