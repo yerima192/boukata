@@ -13,6 +13,7 @@ import {
   TextInput,
   ImageBackground,
   Platform,
+  RefreshControl,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -133,7 +134,6 @@ const topStores = [
   },
 ];
 
-
 // Promotional banners
 const promotions = [
   {
@@ -162,7 +162,7 @@ const promotions = [
 ];
 
 // App components
-const Header = ({ onMenuPress, onSearchPress, cartItemCount = 0 }) => {
+export const Header = ({ onMenuPress, onSearchPress, cartItemCount = 0 }) => {
   return (
     <LinearGradient
       colors={[COLORS.secondary, COLORS.secondaryDark]}
@@ -586,10 +586,18 @@ const CreateStorePromo = () => {
 };
 // Main application component
 const HomeScreen = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [cartItems, setCartItems] = useState(3); // Example counter for cart
   const [searchActive, setSearchActive] = useState(false);
   const Wrapper = Platform.OS === "android" ? SafeAreaView : View;
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
 
   return (
     <Wrapper style={styles.safeArea}>
@@ -610,12 +618,19 @@ const HomeScreen = () => {
         style={styles.container}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS.primary]}
+          />
+        }
       >
         <HeroBanner />
         <Test />
         {/* je veux ça pour les boutique en ligne <TopStoresList /> */}
         <CreateStorePromo />
-      <Products />
+        <Products />
         {/* <Commitments /> */}
         <Footer />
       </ScrollView>
