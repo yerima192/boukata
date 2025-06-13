@@ -8,8 +8,10 @@ import {
   Image,
   Dimensions,
   ScrollView,
+  Alert,
 } from "react-native";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
+import { useCart } from "../context/CartContext";
 
 const { width } = Dimensions.get("window");
 
@@ -144,9 +146,29 @@ const TAGS_CONFIG = [
 ];
 
 const Products = () => {
+  const { addToCart } = useCart();
+  const [favorites, setFavorites] = useState([]);
+
   // Fonction pour filtrer les produits par catégorie
   const getProductsByCategory = (category) => {
     return productsData.filter((product) => product.category === category);
+  };
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    Alert.alert(
+      "Produit ajouté",
+      `${product.name} a été ajouté au panier`,
+      [{ text: "OK" }]
+    );
+  };
+
+  const toggleFavorite = (productId) => {
+    setFavorites(prev => 
+      prev.includes(productId) 
+        ? prev.filter(id => id !== productId)
+        : [...prev, productId]
+    );
   };
 
   // Composant Tag
@@ -171,8 +193,15 @@ const Products = () => {
           </View>
         )}
 
-        <TouchableOpacity style={styles.favoriteButton}>
-          <AntDesign name="heart" size={14} color={COLORS.primary} />
+        <TouchableOpacity 
+          style={styles.favoriteButton}
+          onPress={() => toggleFavorite(item.id)}
+        >
+          <AntDesign 
+            name={favorites.includes(item.id) ? "heart" : "hearto"} 
+            size={14} 
+            color={favorites.includes(item.id) ? COLORS.error : COLORS.primary} 
+          />
         </TouchableOpacity>
       </View>
 
@@ -182,7 +211,10 @@ const Products = () => {
         </Text>
         <Text style={styles.productPrice}>{item.price.toFixed(2)} FCFA</Text>
 
-        <TouchableOpacity style={styles.addButton}>
+        <TouchableOpacity 
+          style={styles.addButton}
+          onPress={() => handleAddToCart(item)}
+        >
           <MaterialIcons
             name="add-shopping-cart"
             size={14}

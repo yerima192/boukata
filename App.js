@@ -4,9 +4,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import TabLayout from "./app/(tabs)/_layout";
 import SplashScreen from "./app/SplashScreen";
 import { useEffect, useState } from "react";
+import { CartProvider } from "./app/context/CartContext";
+import { AuthProvider } from "./app/context/AuthContext";
 
 export default function App() {
   const [isSplashVisible, setSplashVisible] = useState(true);
+  
   useEffect(() => {
     const timer = setTimeout(() => {
       setSplashVisible(false);
@@ -16,10 +19,14 @@ export default function App() {
   }, []);
 
   return (
-    <NavigationContainer style={styles.container}>
-      {isSplashVisible ? <SplashScreen /> : <TabLayout />}
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <AuthProvider>
+      <CartProvider>
+        <NavigationContainer style={styles.container}>
+          {isSplashVisible ? <SplashScreen /> : <TabLayout />}
+          <StatusBar style="auto" />
+        </NavigationContainer>
+      </CartProvider>
+    </AuthProvider>
   );
 }
 
