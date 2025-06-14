@@ -70,7 +70,8 @@ const CompteScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { user, isAuthenticated, login, register, logout, updateProfile } = useAuth();
+  const { user, isAuthenticated, login, register, logout, updateProfile } =
+    useAuth();
   const { getCartItemsCount, clearCart } = useCart();
 
   const onRefresh = React.useCallback(() => {
@@ -119,26 +120,25 @@ const CompteScreen = () => {
         phone: "",
       });
     } else {
-      Alert.alert("Erreur", result.error || "Erreur lors de la création du compte");
+      Alert.alert(
+        "Erreur",
+        result.error || "Erreur lors de la création du compte"
+      );
     }
   };
 
   const handleLogout = () => {
-    Alert.alert(
-      "Déconnexion",
-      "Voulez-vous vraiment vous déconnecter ?",
-      [
-        { text: "Annuler", style: "cancel" },
-        {
-          text: "Déconnecter",
-          onPress: () => {
-            logout();
-            clearCart();
-            Alert.alert("Succès", "Vous avez été déconnecté");
-          },
+    Alert.alert("Déconnexion", "Voulez-vous vraiment vous déconnecter ?", [
+      { text: "Annuler", style: "cancel" },
+      {
+        text: "Déconnecter",
+        onPress: () => {
+          logout();
+          clearCart();
+          Alert.alert("Succès", "Vous avez été déconnecté");
         },
-      ]
-    );
+      },
+    ]);
   };
 
   const menuItems = [
@@ -147,49 +147,63 @@ const CompteScreen = () => {
       title: "Mes commandes",
       icon: "shopping-bag",
       iconFamily: "MaterialIcons",
-      onPress: () => Alert.alert("Mes commandes", "Fonctionnalité en cours de développement"),
+      onPress: () =>
+        Alert.alert(
+          "Mes commandes",
+          "Fonctionnalité en cours de développement"
+        ),
     },
     {
       id: "addresses",
       title: "Mes adresses",
       icon: "location-on",
       iconFamily: "MaterialIcons",
-      onPress: () => Alert.alert("Mes adresses", "Fonctionnalité en cours de développement"),
+      onPress: () =>
+        Alert.alert("Mes adresses", "Fonctionnalité en cours de développement"),
     },
     {
       id: "payment",
       title: "Moyens de paiement",
       icon: "payment",
       iconFamily: "MaterialIcons",
-      onPress: () => Alert.alert("Paiement", "Fonctionnalité en cours de développement"),
+      onPress: () =>
+        Alert.alert("Paiement", "Fonctionnalité en cours de développement"),
     },
     {
       id: "favorites",
       title: "Mes favoris",
       icon: "favorite",
       iconFamily: "MaterialIcons",
-      onPress: () => Alert.alert("Favoris", "Fonctionnalité en cours de développement"),
+      onPress: () =>
+        Alert.alert("Favoris", "Fonctionnalité en cours de développement"),
     },
     {
       id: "notifications",
       title: "Notifications",
       icon: "notifications",
       iconFamily: "MaterialIcons",
-      onPress: () => Alert.alert("Notifications", "Fonctionnalité en cours de développement"),
+      onPress: () =>
+        Alert.alert(
+          "Notifications",
+          "Fonctionnalité en cours de développement"
+        ),
     },
     {
       id: "help",
       title: "Aide & Support",
       icon: "help",
       iconFamily: "MaterialIcons",
-      onPress: () => Alert.alert("Aide", "Contactez-nous à support@boukata-ta.com"),
+      onPress: () =>
+        Alert.alert("Aide", "Contactez-nous à support@boukata-ta.com"),
     },
   ];
 
   const renderIcon = (iconName, iconFamily) => {
     switch (iconFamily) {
       case "MaterialIcons":
-        return <MaterialIcons name={iconName} size={24} color={COLORS.secondary} />;
+        return (
+          <MaterialIcons name={iconName} size={24} color={COLORS.secondary} />
+        );
       case "AntDesign":
         return <AntDesign name={iconName} size={24} color={COLORS.secondary} />;
       default:
@@ -229,7 +243,9 @@ const CompteScreen = () => {
           <TextInput
             style={[styles.textInput, styles.passwordInput]}
             value={loginData.password}
-            onChangeText={(text) => setLoginData({ ...loginData, password: text })}
+            onChangeText={(text) =>
+              setLoginData({ ...loginData, password: text })
+            }
             placeholder="Entrez votre mot de passe"
             secureTextEntry={!showPassword}
             autoCapitalize="none"
@@ -282,7 +298,9 @@ const CompteScreen = () => {
         <TextInput
           style={styles.textInput}
           value={registerData.name}
-          onChangeText={(text) => setRegisterData({ ...registerData, name: text })}
+          onChangeText={(text) =>
+            setRegisterData({ ...registerData, name: text })
+          }
           placeholder="Entrez votre nom complet"
           autoCapitalize="words"
         />
@@ -295,7 +313,9 @@ const CompteScreen = () => {
         <TextInput
           style={styles.textInput}
           value={registerData.email}
-          onChangeText={(text) => setRegisterData({ ...registerData, email: text })}
+          onChangeText={(text) =>
+            setRegisterData({ ...registerData, email: text })
+          }
           placeholder="Entrez votre email"
           keyboardType="email-address"
           autoCapitalize="none"
@@ -310,7 +330,9 @@ const CompteScreen = () => {
         <TextInput
           style={styles.textInput}
           value={registerData.phone}
-          onChangeText={(text) => setRegisterData({ ...registerData, phone: text })}
+          onChangeText={(text) =>
+            setRegisterData({ ...registerData, phone: text })
+          }
           placeholder="+227 90 00 00 00"
           keyboardType="phone-pad"
         />
@@ -324,7 +346,9 @@ const CompteScreen = () => {
           <TextInput
             style={[styles.textInput, styles.passwordInput]}
             value={registerData.password}
-            onChangeText={(text) => setRegisterData({ ...registerData, password: text })}
+            onChangeText={(text) =>
+              setRegisterData({ ...registerData, password: text })
+            }
             placeholder="Entrez votre mot de passe"
             secureTextEntry={!showPassword}
             autoCapitalize="none"
@@ -351,7 +375,9 @@ const CompteScreen = () => {
           <TextInput
             style={[styles.textInput, styles.passwordInput]}
             value={registerData.confirmPassword}
-            onChangeText={(text) => setRegisterData({ ...registerData, confirmPassword: text })}
+            onChangeText={(text) =>
+              setRegisterData({ ...registerData, confirmPassword: text })
+            }
             placeholder="Confirmez votre mot de passe"
             secureTextEntry={!showConfirmPassword}
             autoCapitalize="none"
@@ -381,9 +407,7 @@ const CompteScreen = () => {
           setShowLoginForm(true);
         }}
       >
-        <Text style={styles.switchFormText}>
-          Déjà un compte ? Se connecter
-        </Text>
+        <Text style={styles.switchFormText}>Déjà un compte ? Se connecter</Text>
       </TouchableOpacity>
     </View>
   );
@@ -488,15 +512,15 @@ const CompteScreen = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {showLoginForm && <LoginForm />}
-        {showRegisterForm && <RegisterForm />}
-        
-        {!showLoginForm && !showRegisterForm && (
-          <>
-            {isAuthenticated ? <UserProfile /> : <GuestView />}
-          </>
-        )}
-        
+        <View style={{ paddingHorizontal: 16 }}>
+          {showLoginForm && <LoginForm />}
+          {showRegisterForm && <RegisterForm />}
+
+          {!showLoginForm && !showRegisterForm && (
+            <>{isAuthenticated ? <UserProfile /> : <GuestView />}</>
+          )}
+        </View>
+
         <Footer />
       </ScrollView>
     </View>
@@ -512,7 +536,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 10,
   },
   sectionContainer: {
     paddingHorizontal: 20,
@@ -531,7 +555,8 @@ const styles = StyleSheet.create({
   },
   loginCard: {
     borderWidth: 2,
-    borderColor: COLORS.purple,
+    borderColor: COLORS.secondary,
+    marginVertical: 15,
   },
   formHeader: {
     flexDirection: "row",
@@ -572,7 +597,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   labelContainer: {
-    backgroundColor: COLORS.purple,
+    backgroundColor: COLORS.secondary,
     paddingHorizontal: 15,
     paddingVertical: 8,
     borderTopLeftRadius: 8,
@@ -607,7 +632,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   loginButton: {
-    backgroundColor: COLORS.purple,
+    backgroundColor: COLORS.secondary,
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",
