@@ -1,32 +1,38 @@
-import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useEffect,
+  use,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AuthContext = createContext();
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case 'LOAD_USER':
+    case "LOAD_USER":
       return {
         ...state,
         user: action.payload,
         isAuthenticated: !!action.payload,
         loading: false,
       };
-    case 'LOGIN':
+    case "LOGIN":
       return {
         ...state,
         user: action.payload,
         isAuthenticated: true,
         loading: false,
       };
-    case 'LOGOUT':
+    case "LOGOUT":
       return {
         ...state,
         user: null,
         isAuthenticated: false,
         loading: false,
       };
-    case 'UPDATE_PROFILE':
+    case "UPDATE_PROFILE":
       return {
         ...state,
         user: { ...state.user, ...action.payload },
@@ -49,15 +55,15 @@ export const AuthProvider = ({ children }) => {
 
   const loadUser = async () => {
     try {
-      const savedUser = await AsyncStorage.getItem('user');
+      const savedUser = await AsyncStorage.getItem("user");
       if (savedUser) {
-        dispatch({ type: 'LOAD_USER', payload: JSON.parse(savedUser) });
+        dispatch({ type: "LOAD_USER", payload: JSON.parse(savedUser) });
       } else {
-        dispatch({ type: 'LOAD_USER', payload: null });
+        dispatch({ type: "LOAD_USER", payload: null });
       }
     } catch (error) {
-      console.error('Error loading user:', error);
-      dispatch({ type: 'LOAD_USER', payload: null });
+      console.error("Error loading user:", error);
+      dispatch({ type: "LOAD_USER", payload: null });
     }
   };
 
@@ -65,21 +71,23 @@ export const AuthProvider = ({ children }) => {
     try {
       // Simulation d'une API call
       const user = {
-        id: '1',
+        id: "1",
         email,
-        name: 'Utilisateur Test',
-        phone: '+227 90 00 00 00',
-        address: 'Niamey, Niger',
+        name: "Utilisateur Test",
+        phone: "+227 90 00 00 00",
+        address: "Niamey, Niger",
       };
-      
-      await AsyncStorage.setItem('user', JSON.stringify(user));
-      dispatch({ type: 'LOGIN', payload: user });
+
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+      dispatch({ type: "LOGIN", payload: user });
+      console.log("Saved user:", user);
       return { success: true };
     } catch (error) {
-      console.error('Login error:', error);
-      return { success: false, error: 'Erreur de connexion' };
+      console.error("Login error:", error);
+      return { success: false, error: "Erreur de connexion" };
     }
   };
+
 
   const register = async (userData) => {
     try {
@@ -87,34 +95,35 @@ export const AuthProvider = ({ children }) => {
         id: Date.now().toString(),
         ...userData,
       };
-      
-      await AsyncStorage.setItem('user', JSON.stringify(user));
-      dispatch({ type: 'LOGIN', payload: user });
+
+      await AsyncStorage.setItem("user", JSON.stringify(user));
+      dispatch({ type: "LOGIN", payload: user });
       return { success: true };
     } catch (error) {
-      console.error('Register error:', error);
-      return { success: false, error: 'Erreur d\'inscription' };
+      console.error("Register error:", error);
+      return { success: false, error: "Erreur d'inscription" };
     }
   };
 
   const logout = async () => {
     try {
-      await AsyncStorage.removeItem('user');
-      dispatch({ type: 'LOGOUT' });
+      await AsyncStorage.removeItem("user");
+      dispatch({ type: "LOGOUT" });
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
+
 
   const updateProfile = async (userData) => {
     try {
       const updatedUser = { ...state.user, ...userData };
-      await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
-      dispatch({ type: 'UPDATE_PROFILE', payload: userData });
+      await AsyncStorage.setItem("user", JSON.stringify(updatedUser));
+      dispatch({ type: "UPDATE_PROFILE", payload: userData });
       return { success: true };
     } catch (error) {
-      console.error('Update profile error:', error);
-      return { success: false, error: 'Erreur de mise à jour' };
+      console.error("Update profile error:", error);
+      return { success: false, error: "Erreur de mise à jour" };
     }
   };
 
@@ -136,7 +145,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

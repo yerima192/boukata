@@ -53,14 +53,15 @@ const CompteScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [registerData, setRegisterData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    phone: "",
-  });
+  // Individual states for Login Form
+  const [loginPhone, setLoginPhone] = useState("");
+  const [loginPassword, setLoginPassword] = useState("");
+
+  // Individual states for Register Form
+  const [registerName, setRegisterName] = useState("");
+  const [registerPhone, setRegisterPhone] = useState("");
+  const [registerPassword, setRegisterPassword] = useState("");
+  const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
 
   const { user, isAuthenticated, login, register, logout } = useAuth();
   const { clearCart } = useCart();
@@ -73,43 +74,50 @@ const CompteScreen = () => {
   }, []);
 
   const handleLogin = async () => {
-    if (!loginData.email || !loginData.password) {
+    if (!loginPhone || !loginPassword) {
       Alert.alert("Erreur", "Veuillez remplir tous les champs");
       return;
     }
 
-    const result = await login(loginData.email, loginData.password);
+    // Assuming your login function in AuthContext can handle phone number now
+    const result = await login(loginPhone, loginPassword);
     if (result.success) {
       Alert.alert("Succès", "Connexion réussie !");
       setShowLoginForm(false);
-      setLoginData({ email: "", password: "" });
+      setLoginPhone("");
+      setLoginPassword("");
     } else {
       Alert.alert("Erreur", result.error || "Erreur de connexion");
     }
   };
 
   const handleRegister = async () => {
-    if (!registerData.name || !registerData.email || !registerData.password) {
+    if (!registerName || !registerPhone || !registerPassword) {
       Alert.alert("Erreur", "Veuillez remplir tous les champs obligatoires");
       return;
     }
 
-    if (registerData.password !== registerData.confirmPassword) {
+    if (registerPassword !== registerConfirmPassword) {
       Alert.alert("Erreur", "Les mots de passe ne correspondent pas");
       return;
     }
 
+    const registerData = {
+      name: registerName,
+      phone: registerPhone,
+      password: registerPassword,
+      // confirmPassword is not usually sent to the backend, but kept for client-side validation
+    };
+
+    // Assuming your register function in AuthContext can handle phone number now
     const result = await register(registerData);
     if (result.success) {
       Alert.alert("Succès", "Compte créé avec succès !");
       setShowRegisterForm(false);
-      setRegisterData({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        phone: "",
-      });
+      setRegisterName("");
+      setRegisterPhone("");
+      setRegisterPassword("");
+      setRegisterConfirmPassword("");
     } else {
       Alert.alert("Erreur", result.error || "Erreur lors de la création du compte");
     }
@@ -178,13 +186,13 @@ const CompteScreen = () => {
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Email</Text>
+        <Text style={styles.inputLabel}>Numéro de téléphone</Text>
         <TextInput
           style={styles.textInput}
-          value={loginData.email}
-          onChangeText={(text) => setLoginData({ ...loginData, email: text })}
-          placeholder="Entrez votre email"
-          keyboardType="email-address"
+          value={loginPhone}
+          onChangeText={setLoginPhone}
+          placeholder="Entrez votre numéro de téléphone"
+          keyboardType="phone-pad"
           autoCapitalize="none"
         />
       </View>
@@ -194,8 +202,8 @@ const CompteScreen = () => {
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.textInput, styles.passwordInput]}
-            value={loginData.password}
-            onChangeText={(text) => setLoginData({ ...loginData, password: text })}
+            value={loginPassword}
+            onChangeText={setLoginPassword}
             placeholder="Entrez votre mot de passe"
             secureTextEntry={!showPassword}
             autoCapitalize="none"
@@ -242,31 +250,19 @@ const CompteScreen = () => {
         <Text style={styles.inputLabel}>Nom complet *</Text>
         <TextInput
           style={styles.textInput}
-          value={registerData.name}
-          onChangeText={(text) => setRegisterData({ ...registerData, name: text })}
+          value={registerName}
+          onChangeText={setRegisterName}
           placeholder="Entrez votre nom complet"
           autoCapitalize="words"
         />
       </View>
 
       <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Email *</Text>
+        <Text style={styles.inputLabel}>Numéro de téléphone *</Text>
         <TextInput
           style={styles.textInput}
-          value={registerData.email}
-          onChangeText={(text) => setRegisterData({ ...registerData, email: text })}
-          placeholder="Entrez votre email"
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Téléphone</Text>
-        <TextInput
-          style={styles.textInput}
-          value={registerData.phone}
-          onChangeText={(text) => setRegisterData({ ...registerData, phone: text })}
+          value={registerPhone}
+          onChangeText={setRegisterPhone}
           placeholder="+227 90 00 00 00"
           keyboardType="phone-pad"
         />
@@ -277,8 +273,8 @@ const CompteScreen = () => {
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.textInput, styles.passwordInput]}
-            value={registerData.password}
-            onChangeText={(text) => setRegisterData({ ...registerData, password: text })}
+            value={registerPassword}
+            onChangeText={setRegisterPassword}
             placeholder="Entrez votre mot de passe"
             secureTextEntry={!showPassword}
             autoCapitalize="none"
@@ -301,8 +297,8 @@ const CompteScreen = () => {
         <View style={styles.passwordContainer}>
           <TextInput
             style={[styles.textInput, styles.passwordInput]}
-            value={registerData.confirmPassword}
-            onChangeText={(text) => setRegisterData({ ...registerData, confirmPassword: text })}
+            value={registerConfirmPassword}
+            onChangeText={setRegisterConfirmPassword}
             placeholder="Confirmez votre mot de passe"
             secureTextEntry={!showConfirmPassword}
             autoCapitalize="none"
@@ -345,7 +341,8 @@ const CompteScreen = () => {
           </View>
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{user?.name}</Text>
-            <Text style={styles.userEmail}>{user?.email}</Text>
+            {/* Display phone number if available in user object */}
+            <Text style={styles.userPhone}>{user?.phone}</Text>
           </View>
         </View>
         <TouchableOpacity style={styles.editButton}>
@@ -591,7 +588,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  userEmail: {
+  userPhone: { // Added style for phone number in profile
     color: "rgba(255,255,255,0.8)",
     fontSize: 14,
   },
