@@ -14,7 +14,7 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import Sidebar from "./Sidebar";
+import Sidebar from "./Sidebar"; // Assuming Sidebar is also a separate component
 
 const { width } = Dimensions.get("window");
 
@@ -38,57 +38,70 @@ const SHADOWS = {
   },
 };
 
+// --- HOISTED COMPONENTS START HERE ---
+
+// SearchModal component (moved outside Header)
+const SearchModal = ({
+  searchModalOpen,
+  setSearchModalOpen,
+  searchQuery,
+  setSearchQuery,
+  handleSearch,
+}) => (
+  <Modal
+    visible={searchModalOpen}
+    animationType="slide"
+    transparent={true}
+    onRequestClose={() => setSearchModalOpen(false)}
+  >
+    <View style={styles.searchModalOverlay}>
+      <View style={styles.searchModalContent}>
+        <View style={styles.searchModalHeader}>
+          <Text style={styles.searchModalTitle}>Rechercher</Text>
+          <TouchableOpacity onPress={() => setSearchModalOpen(false)}>
+            <MaterialIcons name="close" size={24} color={COLORS.gray} />
+          </TouchableOpacity>
+        </View>
+        
+        <View style={styles.searchInputContainer}>
+          <MaterialIcons name="search" size={20} color={COLORS.gray} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Rechercher des produits, services..."
+            placeholderTextColor={COLORS.gray}
+            value={searchQuery}
+            onChangeText={setSearchQuery} // Direct setter works fine here
+            autoFocus={true}
+            onSubmitEditing={handleSearch}
+          />
+        </View>
+        
+        <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
+          <Text style={styles.searchButtonText}>Rechercher</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  </Modal>
+);
+
+// --- HOISTED COMPONENTS END HERE ---
+
+
 const Header = ({ title = "Boukata-Ta", showSearch = true, showCart = true }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
   const { getCartItemsCount } = useCart();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user } = useAuth(); // isAuthenticated and user are not used in this component.
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
       console.log("Recherche:", searchQuery);
       setSearchModalOpen(false);
-      setSearchQuery("");
+      setSearchQuery(""); // Clear search query after search
     }
   };
-
-  const SearchModal = () => (
-    <Modal
-      visible={searchModalOpen}
-      animationType="slide"
-      transparent={true}
-      onRequestClose={() => setSearchModalOpen(false)}
-    >
-      <View style={styles.searchModalOverlay}>
-        <View style={styles.searchModalContent}>
-          <View style={styles.searchModalHeader}>
-            <Text style={styles.searchModalTitle}>Rechercher</Text>
-            <TouchableOpacity onPress={() => setSearchModalOpen(false)}>
-              <MaterialIcons name="close" size={24} color={COLORS.gray} />
-            </TouchableOpacity>
-          </View>
-          
-          <View style={styles.searchInputContainer}>
-            <MaterialIcons name="search" size={20} color={COLORS.gray} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Rechercher des produits, services..."
-              value={searchQuery}
-              onChangeText={setSearchQuery}
-              autoFocus={true}
-              onSubmitEditing={handleSearch}
-            />
-          </View>
-          
-          <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-            <Text style={styles.searchButtonText}>Rechercher</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </Modal>
-  );
 
   return (
     <>
@@ -151,7 +164,14 @@ const Header = ({ title = "Boukata-Ta", showSearch = true, showCart = true }) =>
         onClose={() => setSidebarOpen(false)} 
       />
       
-      <SearchModal />
+      {/* Render the hoisted SearchModal component */}
+      <SearchModal 
+        searchModalOpen={searchModalOpen}
+        setSearchModalOpen={setSearchModalOpen}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        handleSearch={handleSearch}
+      />
     </>
   );
 };
@@ -227,7 +247,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "flex-start",
-    paddingTop: 100,
+    paddingTop: 100, // Adjusted to appear below the header
   },
   searchModalContent: {
     backgroundColor: COLORS.white,

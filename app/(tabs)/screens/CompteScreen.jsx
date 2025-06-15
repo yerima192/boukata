@@ -46,6 +46,188 @@ const SHADOWS = {
   },
 };
 
+// Composant LoginForm extrait et mémorisé
+const LoginForm = React.memo(({ 
+  loginData, 
+  updateLoginData, 
+  showPassword, 
+  setShowPassword, 
+  handleLogin, 
+  setShowLoginForm, 
+  setShowRegisterForm 
+}) => (
+  <View style={styles.formContainer}>
+    <View style={styles.formHeader}>
+      <Text style={styles.formTitle}>Connexion</Text>
+      <TouchableOpacity onPress={() => setShowLoginForm(false)}>
+        <MaterialIcons name="close" size={24} color={COLORS.gray} />
+      </TouchableOpacity>
+    </View>
+
+    <View style={styles.inputGroup}>
+      <Text style={styles.inputLabel}>Numéro de téléphone</Text>
+      <TextInput
+        style={styles.simpleInput}
+        value={loginData.phone}
+        onChangeText={(text) => updateLoginData('phone', text)}
+        placeholder="Entrez votre numéro de téléphone"
+        keyboardType="phone-pad"
+        autoCapitalize="none"
+        autoCorrect={false}
+      />
+    </View>
+
+    <View style={styles.inputGroup}>
+      <Text style={styles.inputLabel}>Mot de passe</Text>
+      <View style={styles.passwordWrapper}>
+        <TextInput
+          style={styles.passwordField}
+          value={loginData.password}
+          onChangeText={(text) => updateLoginData('password', text)}
+          placeholder="Entrez votre mot de passe"
+          secureTextEntry={!showPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={() => setShowPassword(!showPassword)}
+        >
+          <MaterialIcons
+            name={showPassword ? "visibility" : "visibility-off"}
+            size={20}
+            color={COLORS.gray}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+    <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
+      <Text style={styles.submitButtonText}>SE CONNECTER</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={styles.switchFormButton}
+      onPress={() => {
+        setShowLoginForm(false);
+        setShowRegisterForm(true);
+      }}
+    >
+      <Text style={styles.switchFormText}>Pas de compte ? Créer un compte</Text>
+    </TouchableOpacity>
+  </View>
+));
+
+// Composant RegisterForm extrait et mémorisé
+const RegisterForm = React.memo(({ 
+  registerData, 
+  updateRegisterData, 
+  showPassword, 
+  setShowPassword,
+  showConfirmPassword,
+  setShowConfirmPassword,
+  handleRegister, 
+  setShowRegisterForm, 
+  setShowLoginForm 
+}) => (
+  <View style={styles.formContainer}>
+    <View style={styles.formHeader}>
+      <Text style={styles.formTitle}>Créer un compte</Text>
+      <TouchableOpacity onPress={() => setShowRegisterForm(false)}>
+        <MaterialIcons name="close" size={24} color={COLORS.gray} />
+      </TouchableOpacity>
+    </View>
+
+    <View style={styles.inputGroup}>
+      <Text style={styles.inputLabel}>Nom complet *</Text>
+      <TextInput
+        style={styles.simpleInput}
+        value={registerData.name}
+        onChangeText={(text) => updateRegisterData('name', text)}
+        placeholder="Entrez votre nom complet"
+        autoCapitalize="words"
+        autoCorrect={false}
+      />
+    </View>
+
+    <View style={styles.inputGroup}>
+      <Text style={styles.inputLabel}>Numéro de téléphone *</Text>
+      <TextInput
+        style={styles.simpleInput}
+        value={registerData.phone}
+        onChangeText={(text) => updateRegisterData('phone', text)}
+        placeholder="+227 90 00 00 00"
+        keyboardType="phone-pad"
+        autoCorrect={false}
+      />
+    </View>
+
+    <View style={styles.inputGroup}>
+      <Text style={styles.inputLabel}>Mot de passe *</Text>
+      <View style={styles.passwordWrapper}>
+        <TextInput
+          style={styles.passwordField}
+          value={registerData.password}
+          onChangeText={(text) => updateRegisterData('password', text)}
+          placeholder="Entrez votre mot de passe"
+          secureTextEntry={!showPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={() => setShowPassword(!showPassword)}
+        >
+          <MaterialIcons
+            name={showPassword ? "visibility" : "visibility-off"}
+            size={20}
+            color={COLORS.gray}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+    <View style={styles.inputGroup}>
+      <Text style={styles.inputLabel}>Confirmer le mot de passe *</Text>
+      <View style={styles.passwordWrapper}>
+        <TextInput
+          style={styles.passwordField}
+          value={registerData.confirmPassword}
+          onChangeText={(text) => updateRegisterData('confirmPassword', text)}
+          placeholder="Confirmez votre mot de passe"
+          secureTextEntry={!showConfirmPassword}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
+        <TouchableOpacity
+          style={styles.eyeIcon}
+          onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+        >
+          <MaterialIcons
+            name={showConfirmPassword ? "visibility" : "visibility-off"}
+            size={20}
+            color={COLORS.gray}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+
+    <TouchableOpacity style={styles.submitButton} onPress={handleRegister}>
+      <Text style={styles.submitButtonText}>CRÉER MON COMPTE</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={styles.switchFormButton}
+      onPress={() => {
+        setShowRegisterForm(false);
+        setShowLoginForm(true);
+      }}
+    >
+      <Text style={styles.switchFormText}>Déjà un compte ? Se connecter</Text>
+    </TouchableOpacity>
+  </View>
+));
+
 const CompteScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showLoginForm, setShowLoginForm] = useState(false);
@@ -53,15 +235,18 @@ const CompteScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Individual states for Login Form
-  const [loginPhone, setLoginPhone] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  // États simplifiés avec un seul objet pour chaque formulaire
+  const [loginData, setLoginData] = useState({
+    phone: "",
+    password: ""
+  });
 
-  // Individual states for Register Form
-  const [registerName, setRegisterName] = useState("");
-  const [registerPhone, setRegisterPhone] = useState("");
-  const [registerPassword, setRegisterPassword] = useState("");
-  const [registerConfirmPassword, setRegisterConfirmPassword] = useState("");
+  const [registerData, setRegisterData] = useState({
+    name: "",
+    phone: "",
+    password: "",
+    confirmPassword: ""
+  });
 
   const { user, isAuthenticated, login, register, logout } = useAuth();
   const { clearCart } = useCart();
@@ -73,55 +258,63 @@ const CompteScreen = () => {
     }, 2000);
   }, []);
 
-  const handleLogin = async () => {
-    if (!loginPhone || !loginPassword) {
+  // Fonction pour mettre à jour les données de connexion
+  const updateLoginData = React.useCallback((field, value) => {
+    setLoginData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  }, []);
+
+  // Fonction pour mettre à jour les données d'inscription
+  const updateRegisterData = React.useCallback((field, value) => {
+    setRegisterData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  }, []);
+
+  const handleLogin = React.useCallback(async () => {
+    if (!loginData.phone || !loginData.password) {
       Alert.alert("Erreur", "Veuillez remplir tous les champs");
       return;
     }
 
-    // Assuming your login function in AuthContext can handle phone number now
-    const result = await login(loginPhone, loginPassword);
+    const result = await login(loginData.phone, loginData.password);
     if (result.success) {
       Alert.alert("Succès", "Connexion réussie !");
       setShowLoginForm(false);
-      setLoginPhone("");
-      setLoginPassword("");
+      setLoginData({ phone: "", password: "" });
     } else {
       Alert.alert("Erreur", result.error || "Erreur de connexion");
     }
-  };
+  }, [loginData, login]);
 
-  const handleRegister = async () => {
-    if (!registerName || !registerPhone || !registerPassword) {
+  const handleRegister = React.useCallback(async () => {
+    if (!registerData.name || !registerData.phone || !registerData.password) {
       Alert.alert("Erreur", "Veuillez remplir tous les champs obligatoires");
       return;
     }
 
-    if (registerPassword !== registerConfirmPassword) {
+    if (registerData.password !== registerData.confirmPassword) {
       Alert.alert("Erreur", "Les mots de passe ne correspondent pas");
       return;
     }
 
-    const registerData = {
-      name: registerName,
-      phone: registerPhone,
-      password: registerPassword,
-      // confirmPassword is not usually sent to the backend, but kept for client-side validation
-    };
+    const result = await register({
+      name: registerData.name,
+      phone: registerData.phone,
+      password: registerData.password,
+    });
 
-    // Assuming your register function in AuthContext can handle phone number now
-    const result = await register(registerData);
     if (result.success) {
       Alert.alert("Succès", "Compte créé avec succès !");
       setShowRegisterForm(false);
-      setRegisterName("");
-      setRegisterPhone("");
-      setRegisterPassword("");
-      setRegisterConfirmPassword("");
+      setRegisterData({ name: "", phone: "", password: "", confirmPassword: "" });
     } else {
       Alert.alert("Erreur", result.error || "Erreur lors de la création du compte");
     }
-  };
+  }, [registerData, register]);
 
   const handleLogout = () => {
     Alert.alert("Déconnexion", "Voulez-vous vraiment vous déconnecter ?", [
@@ -176,162 +369,6 @@ const CompteScreen = () => {
     },
   ];
 
-  const LoginForm = () => (
-    <View style={[styles.card, styles.formCard]}>
-      <View style={styles.formHeader}>
-        <Text style={styles.formTitle}>Connexion</Text>
-        <TouchableOpacity onPress={() => setShowLoginForm(false)}>
-          <MaterialIcons name="close" size={24} color={COLORS.gray} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Numéro de téléphone</Text>
-        <TextInput
-          style={styles.textInput}
-          value={loginPhone}
-          onChangeText={setLoginPhone}
-          placeholder="Entrez votre numéro de téléphone"
-          keyboardType="phone-pad"
-          autoCapitalize="none"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Mot de passe</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={[styles.textInput, styles.passwordInput]}
-            value={loginPassword}
-            onChangeText={setLoginPassword}
-            placeholder="Entrez votre mot de passe"
-            secureTextEntry={!showPassword}
-            autoCapitalize="none"
-          />
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <MaterialIcons
-              name={showPassword ? "visibility" : "visibility-off"}
-              size={20}
-              color={COLORS.gray}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <TouchableOpacity style={styles.submitButton} onPress={handleLogin}>
-        <Text style={styles.submitButtonText}>SE CONNECTER</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.switchFormButton}
-        onPress={() => {
-          setShowLoginForm(false);
-          setShowRegisterForm(true);
-        }}
-      >
-        <Text style={styles.switchFormText}>Pas de compte ? Créer un compte</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const RegisterForm = () => (
-    <View style={[styles.card, styles.formCard]}>
-      <View style={styles.formHeader}>
-        <Text style={styles.formTitle}>Créer un compte</Text>
-        <TouchableOpacity onPress={() => setShowRegisterForm(false)}>
-          <MaterialIcons name="close" size={24} color={COLORS.gray} />
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Nom complet *</Text>
-        <TextInput
-          style={styles.textInput}
-          value={registerName}
-          onChangeText={setRegisterName}
-          placeholder="Entrez votre nom complet"
-          autoCapitalize="words"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Numéro de téléphone *</Text>
-        <TextInput
-          style={styles.textInput}
-          value={registerPhone}
-          onChangeText={setRegisterPhone}
-          placeholder="+227 90 00 00 00"
-          keyboardType="phone-pad"
-        />
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Mot de passe *</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={[styles.textInput, styles.passwordInput]}
-            value={registerPassword}
-            onChangeText={setRegisterPassword}
-            placeholder="Entrez votre mot de passe"
-            secureTextEntry={!showPassword}
-            autoCapitalize="none"
-          />
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowPassword(!showPassword)}
-          >
-            <MaterialIcons
-              name={showPassword ? "visibility" : "visibility-off"}
-              size={20}
-              color={COLORS.gray}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.inputLabel}>Confirmer le mot de passe *</Text>
-        <View style={styles.passwordContainer}>
-          <TextInput
-            style={[styles.textInput, styles.passwordInput]}
-            value={registerConfirmPassword}
-            onChangeText={setRegisterConfirmPassword}
-            placeholder="Confirmez votre mot de passe"
-            secureTextEntry={!showConfirmPassword}
-            autoCapitalize="none"
-          />
-          <TouchableOpacity
-            style={styles.eyeButton}
-            onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-          >
-            <MaterialIcons
-              name={showConfirmPassword ? "visibility" : "visibility-off"}
-              size={20}
-              color={COLORS.gray}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      <TouchableOpacity style={styles.submitButton} onPress={handleRegister}>
-        <Text style={styles.submitButtonText}>CRÉER MON COMPTE</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.switchFormButton}
-        onPress={() => {
-          setShowRegisterForm(false);
-          setShowLoginForm(true);
-        }}
-      >
-        <Text style={styles.switchFormText}>Déjà un compte ? Se connecter</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
   const UserProfile = () => (
     <View style={styles.profileSection}>
       <LinearGradient colors={[COLORS.primary, "#000066"]} style={styles.profileHeader}>
@@ -341,7 +378,6 @@ const CompteScreen = () => {
           </View>
           <View style={styles.userInfo}>
             <Text style={styles.userName}>{user?.name}</Text>
-            {/* Display phone number if available in user object */}
             <Text style={styles.userPhone}>{user?.phone}</Text>
           </View>
         </View>
@@ -411,8 +447,31 @@ const CompteScreen = () => {
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         <View style={styles.content}>
-          {showLoginForm && <LoginForm />}
-          {showRegisterForm && <RegisterForm />}
+          {showLoginForm && (
+            <LoginForm
+              loginData={loginData}
+              updateLoginData={updateLoginData}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+              handleLogin={handleLogin}
+              setShowLoginForm={setShowLoginForm}
+              setShowRegisterForm={setShowRegisterForm}
+            />
+          )}
+          
+          {showRegisterForm && (
+            <RegisterForm
+              registerData={registerData}
+              updateRegisterData={updateRegisterData}
+              showPassword={showPassword}
+              setShowPassword={setShowPassword}
+              showConfirmPassword={showConfirmPassword}
+              setShowConfirmPassword={setShowConfirmPassword}
+              handleRegister={handleRegister}
+              setShowRegisterForm={setShowRegisterForm}
+              setShowLoginForm={setShowLoginForm}
+            />
+          )}
 
           {!showLoginForm && !showRegisterForm && (
             <>{isAuthenticated ? <UserProfile /> : <GuestView />}</>
@@ -445,6 +504,44 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     ...SHADOWS.medium,
+  },
+  // Styles simplifiés pour les formulaires
+  formContainer: {
+    backgroundColor: COLORS.white,
+    borderRadius: 12,
+    padding: 20,
+    marginVertical: 15,
+    elevation: 4,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  inputGroup: {
+    marginBottom: 16,
+  },
+  simpleInput: {
+    backgroundColor: "#F2F2F2",
+    paddingHorizontal: 12,
+    paddingVertical: 12,
+    borderRadius: 8,
+    fontSize: 16,
+  },
+  passwordWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#F2F2F2",
+    borderRadius: 8,
+    paddingHorizontal: 8,
+  },
+  passwordField: {
+    flex: 1,
+    paddingHorizontal: 8,
+    paddingVertical: 12,
+    fontSize: 16,
+  },
+  eyeIcon: {
+    paddingHorizontal: 8,
   },
   welcomeCard: {
     alignItems: "center",
@@ -482,35 +579,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 20,
   },
-  inputContainer: {
-    marginBottom: 15,
-  },
   inputLabel: {
-    fontSize: 14,
-    fontWeight: "600",
     color: COLORS.text,
-    marginBottom: 8,
-  },
-  textInput: {
-    borderWidth: 1,
-    borderColor: COLORS.lightGray,
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    fontSize: 16,
-    backgroundColor: COLORS.white,
-  },
-  passwordContainer: {
-    position: "relative",
-  },
-  passwordInput: {
-    paddingRight: 50,
-  },
-  eyeButton: {
-    position: "absolute",
-    right: 15,
-    top: 12,
-    padding: 5,
+    marginBottom: 6,
+    fontWeight: "500",
+    fontSize: 14,
   },
   primaryButton: {
     backgroundColor: COLORS.primary,
@@ -588,7 +661,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  userPhone: { // Added style for phone number in profile
+  userPhone: {
     color: "rgba(255,255,255,0.8)",
     fontSize: 14,
   },

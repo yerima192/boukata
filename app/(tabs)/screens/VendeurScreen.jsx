@@ -46,6 +46,170 @@ const SHADOWS = {
   },
 };
 
+// --- HOISTED COMPONENTS START HERE ---
+
+// BenefitsTab component
+const BenefitsTab = ({ benefits }) => (
+  <View style={styles.tabContent}>
+    <Text style={styles.sectionTitle}>Pourquoi vendre sur Boukata-Ta ?</Text>
+    <View style={styles.benefitsGrid}>
+      {benefits.map((benefit) => (
+        <View key={benefit.id} style={styles.benefitCard}>
+          <View style={[styles.benefitIcon, { backgroundColor: benefit.color }]}>
+            <MaterialIcons name={benefit.icon} size={30} color={COLORS.white} />
+          </View>
+          <Text style={styles.benefitTitle}>{benefit.title}</Text>
+          <Text style={styles.benefitDescription}>{benefit.description}</Text>
+        </View>
+      ))}
+    </View>
+  </View>
+);
+
+// FeaturesTab component
+const FeaturesTab = ({ features }) => (
+  <View style={styles.tabContent}>
+    <Text style={styles.sectionTitle}>Fonctionnalités incluses</Text>
+    <View style={styles.featuresList}>
+      {features.map((feature) => (
+        <View key={feature.id} style={styles.featureItem}>
+          <View style={styles.featureIconContainer}>
+            <MaterialIcons name={feature.icon} size={24} color={COLORS.primary} />
+          </View>
+          <View style={styles.featureContent}>
+            <Text style={styles.featureTitle}>{feature.title}</Text>
+            <Text style={styles.featureDescription}>{feature.description}</Text>
+          </View>
+        </View>
+      ))}
+    </View>
+  </View>
+);
+
+// StepsTab component
+const StepsTab = ({ steps }) => (
+  <View style={styles.tabContent}>
+    <Text style={styles.sectionTitle}>Comment ça marche ?</Text>
+    <View style={styles.stepsList}>
+      {steps.map((step, index) => (
+        <View key={step.id} style={styles.stepItem}>
+          <View style={styles.stepNumber}>
+            <Text style={styles.stepNumberText}>{index + 1}</Text>
+          </View>
+          <View style={styles.stepContent}>
+            <Text style={styles.stepTitle}>{step.title}</Text>
+            <Text style={styles.stepDescription}>{step.description}</Text>
+          </View>
+          <MaterialIcons name={step.icon} size={24} color={COLORS.secondary} />
+        </View>
+      ))}
+    </View>
+  </View>
+);
+
+// CreateStoreForm component
+const CreateStoreForm = ({ storeData, setStoreData, handleCreateStore, setShowCreateStoreForm }) => (
+  <View style={styles.formContainer}>
+    <View style={styles.formHeader}>
+      <Text style={styles.formTitle}>Créer ma boutique</Text>
+      <TouchableOpacity onPress={() => setShowCreateStoreForm(false)}>
+        <MaterialIcons name="close" size={24} color={COLORS.gray} />
+      </TouchableOpacity>
+    </View>
+
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.inputGroup}>
+        <Text style={styles.inputLabel}>Nom de la boutique *</Text>
+        <TextInput
+          style={styles.textInput}
+          value={storeData.name}
+          onChangeText={(text) => setStoreData({ ...storeData, name: text })}
+          placeholder="Ex: Ma Super Boutique"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.inputLabel}>Description *</Text>
+        <TextInput
+          style={[styles.textInput, styles.textArea]}
+          value={storeData.description}
+          onChangeText={(text) => setStoreData({ ...storeData, description: text })}
+          placeholder="Décrivez votre boutique et vos produits..."
+          multiline
+          numberOfLines={4}
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.inputLabel}>Catégorie *</Text>
+        <View style={styles.categoryGrid}>
+          {["Alimentation", "Mode", "Électronique", "Beauté", "Maison", "Autre"].map(
+            (category) => (
+              <TouchableOpacity
+                key={category}
+                style={[
+                  styles.categoryButton,
+                  storeData.category === category && styles.categoryButtonActive,
+                ]}
+                onPress={() => setStoreData({ ...storeData, category })}
+              >
+                <Text
+                  style={[
+                    styles.categoryButtonText,
+                    storeData.category === category && styles.categoryButtonTextActive,
+                  ]}
+                >
+                  {category}
+                </Text>
+              </TouchableOpacity>
+            )
+          )}
+        </View>
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.inputLabel}>Téléphone</Text>
+        <TextInput
+          style={styles.textInput}
+          value={storeData.phone}
+          onChangeText={(text) => setStoreData({ ...storeData, phone: text })}
+          placeholder="+227 90 00 00 00"
+          keyboardType="phone-pad"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.inputLabel}>Adresse</Text>
+        <TextInput
+          style={styles.textInput}
+          value={storeData.address}
+          onChangeText={(text) => setStoreData({ ...storeData, address: text })}
+          placeholder="Votre adresse complète"
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.inputLabel}>Email de contact</Text>
+        <TextInput
+          style={styles.textInput}
+          value={storeData.email}
+          onChangeText={(text) => setStoreData({ ...storeData, email: text })}
+          placeholder="contact@maboutique.com"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+      </View>
+
+      <TouchableOpacity style={styles.submitButton} onPress={handleCreateStore}>
+        <Text style={styles.submitButtonText}>CRÉER MA BOUTIQUE</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  </View>
+);
+
+// --- HOISTED COMPONENTS END HERE ---
+
+
 const VendeurScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [showCreateStoreForm, setShowCreateStoreForm] = useState(false);
@@ -191,161 +355,6 @@ const VendeurScreen = () => {
     );
   };
 
-  const BenefitsTab = () => (
-    <View style={styles.tabContent}>
-      <Text style={styles.sectionTitle}>Pourquoi vendre sur Boukata-Ta ?</Text>
-      <View style={styles.benefitsGrid}>
-        {benefits.map((benefit) => (
-          <View key={benefit.id} style={styles.benefitCard}>
-            <View style={[styles.benefitIcon, { backgroundColor: benefit.color }]}>
-              <MaterialIcons name={benefit.icon} size={30} color={COLORS.white} />
-            </View>
-            <Text style={styles.benefitTitle}>{benefit.title}</Text>
-            <Text style={styles.benefitDescription}>{benefit.description}</Text>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-
-  const FeaturesTab = () => (
-    <View style={styles.tabContent}>
-      <Text style={styles.sectionTitle}>Fonctionnalités incluses</Text>
-      <View style={styles.featuresList}>
-        {features.map((feature) => (
-          <View key={feature.id} style={styles.featureItem}>
-            <View style={styles.featureIconContainer}>
-              <MaterialIcons name={feature.icon} size={24} color={COLORS.primary} />
-            </View>
-            <View style={styles.featureContent}>
-              <Text style={styles.featureTitle}>{feature.title}</Text>
-              <Text style={styles.featureDescription}>{feature.description}</Text>
-            </View>
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-
-  const StepsTab = () => (
-    <View style={styles.tabContent}>
-      <Text style={styles.sectionTitle}>Comment ça marche ?</Text>
-      <View style={styles.stepsList}>
-        {steps.map((step, index) => (
-          <View key={step.id} style={styles.stepItem}>
-            <View style={styles.stepNumber}>
-              <Text style={styles.stepNumberText}>{index + 1}</Text>
-            </View>
-            <View style={styles.stepContent}>
-              <Text style={styles.stepTitle}>{step.title}</Text>
-              <Text style={styles.stepDescription}>{step.description}</Text>
-            </View>
-            <MaterialIcons name={step.icon} size={24} color={COLORS.secondary} />
-          </View>
-        ))}
-      </View>
-    </View>
-  );
-
-  const CreateStoreForm = () => (
-    <View style={styles.formContainer}>
-      <View style={styles.formHeader}>
-        <Text style={styles.formTitle}>Créer ma boutique</Text>
-        <TouchableOpacity onPress={() => setShowCreateStoreForm(false)}>
-          <MaterialIcons name="close" size={24} color={COLORS.gray} />
-        </TouchableOpacity>
-      </View>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Nom de la boutique *</Text>
-          <TextInput
-            style={styles.textInput}
-            value={storeData.name}
-            onChangeText={(text) => setStoreData({ ...storeData, name: text })}
-            placeholder="Ex: Ma Super Boutique"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Description *</Text>
-          <TextInput
-            style={[styles.textInput, styles.textArea]}
-            value={storeData.description}
-            onChangeText={(text) => setStoreData({ ...storeData, description: text })}
-            placeholder="Décrivez votre boutique et vos produits..."
-            multiline
-            numberOfLines={4}
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Catégorie *</Text>
-          <View style={styles.categoryGrid}>
-            {["Alimentation", "Mode", "Électronique", "Beauté", "Maison", "Autre"].map(
-              (category) => (
-                <TouchableOpacity
-                  key={category}
-                  style={[
-                    styles.categoryButton,
-                    storeData.category === category && styles.categoryButtonActive,
-                  ]}
-                  onPress={() => setStoreData({ ...storeData, category })}
-                >
-                  <Text
-                    style={[
-                      styles.categoryButtonText,
-                      storeData.category === category && styles.categoryButtonTextActive,
-                    ]}
-                  >
-                    {category}
-                  </Text>
-                </TouchableOpacity>
-              )
-            )}
-          </View>
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Téléphone</Text>
-          <TextInput
-            style={styles.textInput}
-            value={storeData.phone}
-            onChangeText={(text) => setStoreData({ ...storeData, phone: text })}
-            placeholder="+227 90 00 00 00"
-            keyboardType="phone-pad"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Adresse</Text>
-          <TextInput
-            style={styles.textInput}
-            value={storeData.address}
-            onChangeText={(text) => setStoreData({ ...storeData, address: text })}
-            placeholder="Votre adresse complète"
-          />
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.inputLabel}>Email de contact</Text>
-          <TextInput
-            style={styles.textInput}
-            value={storeData.email}
-            onChangeText={(text) => setStoreData({ ...storeData, email: text })}
-            placeholder="contact@maboutique.com"
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
-        </View>
-
-        <TouchableOpacity style={styles.submitButton} onPress={handleCreateStore}>
-          <Text style={styles.submitButtonText}>CRÉER MA BOUTIQUE</Text>
-        </TouchableOpacity>
-      </ScrollView>
-    </View>
-  );
-
   return (
     <View style={styles.container}>
       <Header title="Devenir Vendeur" showSearch={false} />
@@ -358,7 +367,12 @@ const VendeurScreen = () => {
         }
       >
         {showCreateStoreForm ? (
-          <CreateStoreForm />
+          <CreateStoreForm
+            storeData={storeData}
+            setStoreData={setStoreData}
+            handleCreateStore={handleCreateStore}
+            setShowCreateStoreForm={setShowCreateStoreForm}
+          />
         ) : (
           <>
             <LinearGradient
@@ -438,9 +452,9 @@ const VendeurScreen = () => {
                 </TouchableOpacity>
               </View>
 
-              {activeTab === "benefits" && <BenefitsTab />}
-              {activeTab === "features" && <FeaturesTab />}
-              {activeTab === "steps" && <StepsTab />}
+              {activeTab === "benefits" && <BenefitsTab benefits={benefits} />}
+              {activeTab === "features" && <FeaturesTab features={features} />}
+              {activeTab === "steps" && <StepsTab steps={steps} />}
             </View>
 
             <View style={styles.ctaSection}>
@@ -759,7 +773,7 @@ const styles = StyleSheet.create({
   },
   textArea: {
     height: 100,
-    textAlignVertical: "top",
+    textAlignVertical: "top", // Ensures text starts from the top for multiline
   },
   categoryGrid: {
     flexDirection: "row",
@@ -767,7 +781,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   categoryButton: {
-    width: "48%",
+    width: "48%", // Roughly half-width, adjust as needed for spacing
     paddingVertical: 12,
     paddingHorizontal: 15,
     borderRadius: 8,
@@ -793,7 +807,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     borderRadius: 8,
     alignItems: "center",
-    marginTop: 10,
+    marginTop: 10, // Add some space above the button
   },
   submitButtonText: {
     color: COLORS.white,

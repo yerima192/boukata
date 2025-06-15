@@ -23,7 +23,7 @@ export default function App() {
       <CartProvider>
         <NavigationContainer style={styles.container}>
           {isSplashVisible ? <SplashScreen /> : <TabLayout />}
-          <StatusBar style="auto" />
+          <StatusBar style="light" />
         </NavigationContainer>
       </CartProvider>
     </AuthProvider>
