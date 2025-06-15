@@ -9,13 +9,10 @@ import {
   Alert,
   RefreshControl,
   Platform,
-  Image,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { MaterialIcons, FontAwesome5, AntDesign } from "@expo/vector-icons";
+import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Header } from "./HomeScreen";
-import { useCart } from "../../context/CartContext";
+import Header from "../../components/Header";
 import { useAuth } from "../../context/AuthContext";
 import Footer from "../../components/Footer";
 
@@ -51,12 +48,9 @@ const SHADOWS = {
 
 const VendeurScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchActive, setSearchActive] = useState(false);
   const [showCreateStoreForm, setShowCreateStoreForm] = useState(false);
   const [activeTab, setActiveTab] = useState("benefits");
 
-  const { getCartItemsCount } = useCart();
   const { isAuthenticated } = useAuth();
 
   const [storeData, setStoreData] = useState({
@@ -353,15 +347,11 @@ const VendeurScreen = () => {
   );
 
   return (
-    <View style={styles.safeArea}>
-      <Header
-        onMenuPress={() => setSidebarOpen(true)}
-        cartItemCount={getCartItemsCount()}
-        onSearchPress={() => setSearchActive(true)}
-      />
+    <View style={styles.container}>
+      <Header title="Devenir Vendeur" showSearch={false} />
 
       <ScrollView
-        style={styles.container}
+        style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -371,7 +361,6 @@ const VendeurScreen = () => {
           <CreateStoreForm />
         ) : (
           <>
-            {/* Hero Section */}
             <LinearGradient
               colors={[COLORS.primary, "#000066"]}
               style={styles.heroSection}
@@ -394,7 +383,6 @@ const VendeurScreen = () => {
               </View>
             </LinearGradient>
 
-            {/* Stats Section */}
             <View style={styles.statsSection}>
               <View style={styles.statItem}>
                 <Text style={styles.statNumber}>1000+</Text>
@@ -410,7 +398,6 @@ const VendeurScreen = () => {
               </View>
             </View>
 
-            {/* Tabs */}
             <View style={styles.tabsContainer}>
               <View style={styles.tabsHeader}>
                 <TouchableOpacity
@@ -456,7 +443,6 @@ const VendeurScreen = () => {
               {activeTab === "steps" && <StepsTab />}
             </View>
 
-            {/* CTA Section */}
             <View style={styles.ctaSection}>
               <LinearGradient
                 colors={[COLORS.secondary, "#FFB000"]}
@@ -484,13 +470,11 @@ const VendeurScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingBottom: 75,
-    paddingTop: Platform.OS === "android" ? 32 : 0,
   },
-  container: {
+  scrollView: {
     flex: 1,
   },
   heroSection: {

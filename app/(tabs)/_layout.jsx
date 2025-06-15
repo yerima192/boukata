@@ -14,9 +14,8 @@ import VendeurScreen from "./screens/VendeurScreen";
 import FavorisScreen from "./screens/FavorisScreen";
 import CompteScreen from "./screens/CompteScreen";
 
-// Nouvelles couleurs
 const COLORS = {
-  primary: "#E7BA06", // Jaune doré
+  primary: "#E7BA06",
   secondary: "#010080", 
   background: "#FFFFFF",
   card: "rgba(255, 255, 255, 0.8)",
@@ -28,11 +27,9 @@ const COLORS = {
 
 const Tab = createBottomTabNavigator();
 
-// Composant personnalisé pour les tabs avec animation - correction pour assurer la navigation
 const CustomTab = ({ children, onPress, accessibilityState }) => {
   const focused = accessibilityState?.selected || false;
 
-  // Animation pour l'indicateur
   const animatedStyles = useAnimatedStyle(() => {
     return {
       transform: [{ scale: withSpring(focused ? 1 : 0) }],
@@ -52,7 +49,6 @@ const CustomTab = ({ children, onPress, accessibilityState }) => {
   );
 };
 
-// Composant personnalisé pour l'onglet central
 const CenterTab = ({ children, onPress }) => {
   return (
     <Pressable
@@ -87,7 +83,6 @@ export default function TabLayout() {
           height: 90,
           borderTopWidth: 0,
           elevation: 0,
-          // backgroundColor: Platform.OS === "ios" ? "transparent" : COLORS.card,
           ...Platform.select({
             ios: {
               shadowColor: COLORS.secondary,
@@ -166,7 +161,7 @@ export default function TabLayout() {
         }}
       />
       <Tab.Screen
-        name="Pannier"
+        name="Panier"
         component={FavorisScreen}
         options={{
           tabBarIcon: ({ color, size, focused }) => (

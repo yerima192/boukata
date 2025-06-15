@@ -10,10 +10,9 @@ import {
   RefreshControl,
   Platform,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Header } from "./HomeScreen";
+import Header from "../../components/Header";
 import { useCart } from "../../context/CartContext";
 import Footer from "../../components/Footer";
 
@@ -48,8 +47,6 @@ const SHADOWS = {
 
 const FavorisScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchActive, setSearchActive] = useState(false);
   
   const {
     items,
@@ -57,7 +54,6 @@ const FavorisScreen = () => {
     updateQuantity,
     clearCart,
     getCartTotal,
-    getCartItemsCount,
   } = useCart();
 
   const onRefresh = React.useCallback(() => {
@@ -166,15 +162,11 @@ const FavorisScreen = () => {
   );
 
   return (
-    <View style={styles.safeArea}>
-      <Header
-        onMenuPress={() => setSidebarOpen(true)}
-        cartItemCount={getCartItemsCount()}
-        onSearchPress={() => setSearchActive(true)}
-      />
+    <View style={styles.container}>
+      <Header title="Mon Panier" />
 
       <ScrollView
-        style={styles.container}
+        style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -184,7 +176,6 @@ const FavorisScreen = () => {
           <EmptyCart />
         ) : (
           <>
-            {/* Header du panier */}
             <View style={styles.cartHeader}>
               <Text style={styles.cartTitle}>Mon Panier ({items.length})</Text>
               <TouchableOpacity onPress={handleClearCart}>
@@ -192,14 +183,12 @@ const FavorisScreen = () => {
               </TouchableOpacity>
             </View>
 
-            {/* Liste des articles */}
             <View style={styles.cartList}>
               {items.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
             </View>
 
-            {/* Résumé de la commande */}
             <View style={styles.summaryContainer}>
               <LinearGradient
                 colors={[COLORS.primary, "#000066"]}
@@ -249,13 +238,11 @@ const FavorisScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingBottom: 75,
-    paddingTop: Platform.OS === "android" ? 32 : 0,
   },
-  container: {
+  scrollView: {
     flex: 1,
   },
   cartHeader: {

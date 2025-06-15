@@ -12,19 +12,17 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import Footer from "../../components/Footer";
-import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/FontAwesome";
 import { MaterialIcons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { Header } from "./HomeScreen";
+import Header from "../../components/Header";
 import { useCart } from "../../context/CartContext";
 import { useAuth } from "../../context/AuthContext";
+import Footer from "../../components/Footer";
 
 const COLORS = {
   background: "#FAFAFA",
-  primary: "#E7BA06",
-  secondary: "#010080",
+  primary: "#010080",
+  secondary: "#E7BA06",
   white: "#FFFFFF",
   gray: "#8A8A8A",
   lightGray: "#F5F5F5",
@@ -50,7 +48,6 @@ const SHADOWS = {
   },
 };
 
-// Données des catégories
 const categories = [
   {
     id: "1",
@@ -73,7 +70,7 @@ const categories = [
     name: "Pharmacie",
     icon: "medical-bag",
     iconFamily: "FontAwesome5",
-    color: COLORS.primary,
+    color: COLORS.secondary,
     count: "30+ pharmacies",
   },
   {
@@ -81,12 +78,11 @@ const categories = [
     name: "Mode",
     icon: "shopping-bag",
     iconFamily: "FontAwesome5",
-    color: COLORS.secondary,
+    color: COLORS.primary,
     count: "200+ boutiques",
   },
 ];
 
-// Données des magasins populaires
 const popularStores = [
   {
     id: "1",
@@ -95,7 +91,7 @@ const popularStores = [
     rating: 4.8,
     deliveryTime: "25-35 min",
     deliveryFee: "Gratuit",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=400",
+    image: "https://images.pexels.com/photos/262978/pexels-photo-262978.jpeg?auto=compress&cs=tinysrgb&w=400",
     isOpen: true,
   },
   {
@@ -105,7 +101,7 @@ const popularStores = [
     rating: 4.5,
     deliveryTime: "45-60 min",
     deliveryFee: "500 FCFA",
-    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400",
+    image: "https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=400",
     isOpen: true,
   },
   {
@@ -115,7 +111,7 @@ const popularStores = [
     rating: 4.9,
     deliveryTime: "15-25 min",
     deliveryFee: "Gratuit",
-    image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400",
+    image: "https://images.pexels.com/photos/356040/pexels-photo-356040.jpeg?auto=compress&cs=tinysrgb&w=400",
     isOpen: false,
   },
   {
@@ -125,19 +121,16 @@ const popularStores = [
     rating: 4.6,
     deliveryTime: "30-45 min",
     deliveryFee: "300 FCFA",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400",
+    image: "https://images.pexels.com/photos/298863/pexels-photo-298863.jpeg?auto=compress&cs=tinysrgb&w=400",
     isOpen: true,
   },
 ];
 
 const MarcherScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [searchActive, setSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const { getCartItemsCount, addToCart } = useCart();
   const { isAuthenticated } = useAuth();
 
   const onRefresh = React.useCallback(() => {
@@ -153,21 +146,21 @@ const MarcherScreen = () => {
       icon: "bicycle",
       title: "À livrer :",
       description: "Un livreur professionnel de Boukata-ta vous livre",
-      color: COLORS.primary,
+      color: COLORS.secondary,
     },
     {
       id: 2,
       icon: "cutlery",
       title: "Sur place :",
-      description: "Mangez sur place si c'est un\nrestaurant",
-      color: COLORS.secondary,
+      description: "Mangez sur place si c'est un restaurant",
+      color: COLORS.primary,
     },
     {
       id: 3,
       icon: "car",
       title: "À emporter (DRIVE) :",
-      description: "Récupérez votre commande vous\nmême chez le vendeur",
-      color: COLORS.primary,
+      description: "Récupérez votre commande vous même chez le vendeur",
+      color: COLORS.secondary,
     },
   ];
 
@@ -180,7 +173,7 @@ const MarcherScreen = () => {
       case "AntDesign":
         return <AntDesign name={iconName} size={size} color={color} />;
       default:
-        return <Icon name={iconName} size={size} color={color} />;
+        return <FontAwesome5 name={iconName} size={size} color={color} />;
     }
   };
 
@@ -263,7 +256,7 @@ const MarcherScreen = () => {
       <Text style={styles.sectionTitle}>Actions rapides</Text>
       <View style={styles.quickActions}>
         <TouchableOpacity style={styles.quickAction}>
-          <MaterialIcons name="local-offer" size={24} color={COLORS.primary} />
+          <MaterialIcons name="local-offer" size={24} color={COLORS.secondary} />
           <Text style={styles.quickActionText}>Promotions</Text>
         </TouchableOpacity>
         
@@ -273,7 +266,7 @@ const MarcherScreen = () => {
         </TouchableOpacity>
         
         <TouchableOpacity style={styles.quickAction}>
-          <MaterialIcons name="history" size={24} color={COLORS.secondary} />
+          <MaterialIcons name="history" size={24} color={COLORS.primary} />
           <Text style={styles.quickActionText}>Historique</Text>
         </TouchableOpacity>
         
@@ -287,34 +280,27 @@ const MarcherScreen = () => {
 
   if (!isAuthenticated) {
     return (
-      <View style={styles.safeArea}>
-        <Header
-          onMenuPress={() => setSidebarOpen(true)}
-          cartItemCount={getCartItemsCount()}
-          onSearchPress={() => setSearchActive(true)}
-        />
+      <View style={styles.container}>
+        <Header title="Marketplace" />
 
         <ScrollView
-          style={styles.container}
+          style={styles.scrollView}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         >
-          {/* Header avec actualisation */}
           <View style={styles.header}>
             <Text style={styles.updateText}>
               Cet écran se met à jour chaque minute
             </Text>
             <TouchableOpacity style={styles.refreshButton} onPress={onRefresh}>
-              <Icon name="refresh" size={16} color={COLORS.secondary} />
+              <MaterialIcons name="refresh" size={16} color={COLORS.primary} />
               <Text style={styles.refreshText}>Actualiser manuellement</Text>
             </TouchableOpacity>
           </View>
 
-          {/* Contenu principal */}
           <View style={styles.mainContent}>
-            {/* Message de connexion */}
             <View style={styles.connectionCard}>
               <Text style={styles.connectionTitle}>
                 Vous n'êtes pas connecté à votre compte
@@ -323,17 +309,14 @@ const MarcherScreen = () => {
                 Rendez-vous sur l'onglet Mon compte en bas à droite.
               </Text>
 
-              {/* Icône panier */}
               <View style={styles.cartIconContainer}>
-                <Icon name="shopping-basket" size={40} color={COLORS.gray} />
+                <MaterialIcons name="shopping-basket" size={40} color={COLORS.gray} />
               </View>
 
-              {/* Instructions */}
               <Text style={styles.instructionText}>
                 Commandez chez un vendeur et choisissez une des options :
               </Text>
 
-              {/* Options de livraison */}
               <View style={styles.deliveryOptions}>
                 {deliveryOptions.map((option) => (
                   <TouchableOpacity key={option.id} style={styles.deliveryOption}>
@@ -343,7 +326,7 @@ const MarcherScreen = () => {
                         { backgroundColor: option.color },
                       ]}
                     >
-                      <Icon name={option.icon} size={20} color={COLORS.white} />
+                      <FontAwesome5 name={option.icon} size={20} color={COLORS.white} />
                     </View>
                     <View style={styles.optionContent}>
                       <Text style={[styles.optionTitle, { color: option.color }]}>
@@ -365,15 +348,11 @@ const MarcherScreen = () => {
   }
 
   return (
-    <View style={styles.safeArea}>
-      <Header
-        onMenuPress={() => setSidebarOpen(true)}
-        cartItemCount={getCartItemsCount()}
-        onSearchPress={() => setSearchActive(true)}
-      />
+    <View style={styles.container}>
+      <Header title="Marketplace" />
 
       <ScrollView
-        style={styles.container}
+        style={styles.scrollView}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -383,7 +362,6 @@ const MarcherScreen = () => {
         
         <QuickActions />
 
-        {/* Catégories */}
         <View style={styles.categoriesSection}>
           <Text style={styles.sectionTitle}>Catégories</Text>
           <FlatList
@@ -396,7 +374,6 @@ const MarcherScreen = () => {
           />
         </View>
 
-        {/* Magasins populaires */}
         <View style={styles.storesSection}>
           <View style={styles.sectionHeader}>
             <Text style={styles.sectionTitle}>Magasins populaires</Text>
@@ -414,10 +391,9 @@ const MarcherScreen = () => {
           />
         </View>
 
-        {/* Promo Banner */}
         <View style={styles.promoBanner}>
           <LinearGradient
-            colors={[COLORS.primary, "#FFB000"]}
+            colors={[COLORS.secondary, "#FFB000"]}
             style={styles.promoGradient}
           >
             <View style={styles.promoContent}>
@@ -440,13 +416,11 @@ const MarcherScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
+  container: {
     flex: 1,
     backgroundColor: COLORS.background,
-    paddingBottom: 75,
-    paddingTop: Platform.OS === "android" ? 32 : 0,
   },
-  container: {
+  scrollView: {
     flex: 1,
   },
   header: {
@@ -470,7 +444,7 @@ const styles = StyleSheet.create({
   },
   refreshText: {
     fontSize: 14,
-    color: COLORS.secondary,
+    color: COLORS.primary,
     marginLeft: 8,
     fontWeight: "500",
   },
@@ -484,13 +458,13 @@ const styles = StyleSheet.create({
     padding: 30,
     marginBottom: 20,
     borderWidth: 2,
-    borderColor: COLORS.secondary,
+    borderColor: COLORS.primary,
     ...SHADOWS.medium,
   },
   connectionTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: COLORS.secondary,
+    color: COLORS.primary,
     textAlign: "center",
     marginBottom: 10,
   },
@@ -522,7 +496,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.lightGray,
     borderRadius: 12,
     borderLeftWidth: 4,
-    borderLeftColor: COLORS.primary,
+    borderLeftColor: COLORS.secondary,
   },
   optionIcon: {
     width: 40,
@@ -589,7 +563,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: COLORS.secondary,
+    color: COLORS.primary,
     marginBottom: 15,
   },
   sectionHeader: {
@@ -599,7 +573,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   viewAllText: {
-    color: COLORS.primary,
+    color: COLORS.secondary,
     fontSize: 14,
     fontWeight: "500",
   },
@@ -741,17 +715,17 @@ const styles = StyleSheet.create({
   promoTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: COLORS.secondary,
+    color: COLORS.primary,
     marginBottom: 5,
   },
   promoSubtitle: {
     fontSize: 14,
-    color: COLORS.secondary,
+    color: COLORS.primary,
     marginBottom: 15,
     lineHeight: 20,
   },
   promoButton: {
-    backgroundColor: COLORS.secondary,
+    backgroundColor: COLORS.primary,
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,

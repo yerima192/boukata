@@ -15,7 +15,7 @@ import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCart } from "../context/CartContext";
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 const COLORS = {
   primary: "#010080",
@@ -53,7 +53,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-  // Images du produit (simulation)
   const productImages = [
     product.image,
     product.image,
@@ -78,7 +77,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
-      {/* Header */}
       <SafeAreaView style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
@@ -102,7 +100,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
       </SafeAreaView>
 
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Images du produit */}
         <View style={styles.imageSection}>
           <ScrollView
             horizontal
@@ -124,7 +121,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             ))}
           </ScrollView>
           
-          {/* Indicateurs d'images */}
           <View style={styles.imageIndicators}>
             {productImages.map((_, index) => (
               <View
@@ -137,7 +133,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             ))}
           </View>
 
-          {/* Badge promo */}
           {product.isPromo && (
             <View style={styles.promoBadge}>
               <Text style={styles.promoBadgeText}>-{product.discount}%</Text>
@@ -145,7 +140,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
           )}
         </View>
 
-        {/* Informations du produit */}
         <View style={styles.productInfo}>
           <Text style={styles.productName}>{product.name}</Text>
           
@@ -160,7 +154,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             )}
           </View>
 
-          {/* Rating et avis */}
           <View style={styles.ratingContainer}>
             <View style={styles.stars}>
               {[1, 2, 3, 4, 5].map((star) => (
@@ -175,7 +168,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             <Text style={styles.ratingText}>4.0 (125 avis)</Text>
           </View>
 
-          {/* Description */}
           <View style={styles.descriptionSection}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>
@@ -185,7 +177,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </Text>
           </View>
 
-          {/* Caractéristiques */}
           <View style={styles.featuresSection}>
             <Text style={styles.sectionTitle}>Caractéristiques</Text>
             <View style={styles.featureItem}>
@@ -204,7 +195,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </View>
           </View>
 
-          {/* Sélecteur de quantité */}
           <View style={styles.quantitySection}>
             <Text style={styles.sectionTitle}>Quantité</Text>
             <View style={styles.quantitySelector}>
@@ -228,7 +218,6 @@ const ProductDetailScreen = ({ route, navigation }) => {
         </View>
       </ScrollView>
 
-      {/* Boutons d'action */}
       <View style={styles.actionButtons}>
         <TouchableOpacity
           style={styles.addToCartButton}
@@ -403,7 +392,7 @@ const styles = StyleSheet.create({
   quantityButton: {
     width: 40,
     height: 40,
-    border: 1,
+    borderWidth: 1,
     borderColor: COLORS.lightGray,
     borderRadius: 20,
     justifyContent: "center",
