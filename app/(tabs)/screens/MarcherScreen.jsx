@@ -10,15 +10,16 @@ import {
   FlatList,
   Image,
   TextInput,
-  Alert,
+  Alert, // Used for placeholder cart actions
 } from "react-native";
 import { MaterialIcons, AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import Header from "../../components/Header";
-import { useCart } from "../../context/CartContext";
-import { useAuth } from "../../context/AuthContext";
+import Header from "../../components/Header"; // Assuming this Header component exists and is updated
+import { useCart } from "../../context/CartContext"; // Import the useCart hook
+import { useAuth } from "../../context/AuthContext"; // Assuming useAuth is correctly imported
 import Footer from "../../components/Footer";
 
+// --- Global Styles & Data ---
 const COLORS = {
   background: "#FAFAFA",
   primary: "#010080",
@@ -68,7 +69,7 @@ const categories = [
   {
     id: "3",
     name: "Pharmacie",
-    icon: "medical-bag",
+    icon: "briefcase-medical", // Changed icon to a more common pharmacy icon
     iconFamily: "FontAwesome5",
     color: COLORS.secondary,
     count: "30+ pharmacies",
@@ -126,20 +127,145 @@ const popularStores = [
   },
 ];
 
+// --- Memoized Child Components (for performance) ---
+
+const SearchBar = React.memo(({ searchQuery, setSearchQuery }) => (
+  <View style={styles.searchContainer}>
+    <View style={styles.searchBar}>
+      <MaterialIcons name="search" size={20} color={COLORS.gray} />
+      <TextInput
+        style={styles.searchInput}
+        placeholder="Rechercher un restaurant, magasin..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        placeholderTextColor={COLORS.gray}
+      />
+      {searchQuery.length > 0 && (
+        <TouchableOpacity onPress={() => setSearchQuery("")}>
+          <MaterialIcons name="clear" size={20} color={COLORS.gray} />
+        </TouchableOpacity>
+      )}
+    </View>
+  </View>
+));
+
+const QuickActions = React.memo(() => (
+  <View style={styles.quickActionsContainer}>
+    <Text style={styles.sectionTitle}>Actions rapides</Text>
+    <View style={styles.quickActions}>
+      <TouchableOpacity style={styles.quickAction}>
+        <MaterialIcons name="local-offer" size={24} color={COLORS.secondary} />
+        <Text style={styles.quickActionText}>Promotions</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.quickAction}>
+        <MaterialIcons name="favorite" size={24} color={COLORS.error} />
+        <Text style={styles.quickActionText}>Favoris</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.quickAction}>
+        <MaterialIcons name="history" size={24} color={COLORS.primary} />
+        <Text style={styles.quickActionText}>Historique</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity style={styles.quickAction}>
+        <MaterialIcons name="local-pharmacy" size={24} color={COLORS.success} />
+        <Text style={styles.quickActionText}>Urgence</Text>
+      </TouchableOpacity>
+    </View>
+  </View>
+));
+
 const MarcherScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState(null);
 
-  const { isAuthenticated } = useAuth();
+  // --- Hooks ---
+  const { isAuthenticated } = useAuth(); // Authenticated state
+  const { getCartItemsCount, getCartTotal, loading: cartLoading } = useCart(); // Cart state and functions
+  console.log(getCartItemsCount);
+  
 
+  // Helper function for icon rendering
+  const renderIcon = (iconName, iconFamily, size = 24, color = COLORS.white) => {
+    switch (iconFamily) {
+      case "MaterialIcons":
+        return <MaterialIcons name={iconName} size={size} color={color} />;
+      case "FontAwesome5":
+        return <FontAwesome5 name={iconName} size={size} color={color} />;
+      case "AntDesign":
+        return <AntDesign name={iconName} size={size} color={color} />;
+      default:
+        return <FontAwesome5 name={iconName} size={size} color={color} />;
+    }
+  };
+
+  // --- Callbacks ---
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    // Simulate a network request or data fetching delay
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
   }, []);
 
+  // --- Components for FlatList/Memoization ---
+  const CategoryCard = React.memo(({ category, selectedCategory, setSelectedCategory }) => (
+    <TouchableOpacity
+      style={[
+        styles.categoryCard,
+        selectedCategory === category.id && styles.categoryCardSelected,
+      ]}
+      onPress={() => setSelectedCategory(category.id)}
+    >
+      <LinearGradient
+        colors={[category.color, `${category.color}CC`]}
+        style={styles.categoryGradient}
+      >
+        <View style={styles.categoryIcon}>
+          {renderIcon(category.icon, category.iconFamily, 28)}
+        </View>
+        <Text style={styles.categoryName}>{category.name}</Text>
+        <Text style={styles.categoryCount}>{category.count}</Text>
+      </LinearGradient>
+    </TouchableOpacity>
+  ));
+
+  const StoreCard = React.memo(({ store }) => (
+    <TouchableOpacity style={styles.storeCard}>
+      <View style={styles.storeImageContainer}>
+        <Image source={{ uri: store.image }} style={styles.storeImage} />
+        <View style={[styles.statusBadge, { backgroundColor: store.isOpen ? COLORS.success : COLORS.error }]}>
+          <Text style={styles.statusText}>{store.isOpen ? "Ouvert" : "Fermé"}</Text>
+        </View>
+      </View>
+
+      <View style={styles.storeInfo}>
+        <Text style={styles.storeName}>{store.name}</Text>
+        <Text style={styles.storeCategory}>{store.category}</Text>
+
+        <View style={styles.storeDetails}>
+          <View style={styles.ratingContainer}>
+            <AntDesign name="star" size={14} color="#FFD700" />
+            <Text style={styles.ratingText}>{store.rating}</Text>
+          </View>
+
+          <View style={styles.deliveryInfo}>
+            <MaterialIcons name="access-time" size={14} color={COLORS.gray} />
+            <Text style={styles.deliveryText}>{store.deliveryTime}</Text>
+          </View>
+
+          <View style={styles.feeInfo}>
+            <MaterialIcons name="delivery-dining" size={14} color={COLORS.gray} />
+            <Text style={styles.feeText}>{store.deliveryFee}</Text>
+          </View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  ));
+
+  // --- Delivery Options Data (for unauthenticated view) ---
   const deliveryOptions = [
     {
       id: 1,
@@ -159,129 +285,21 @@ const MarcherScreen = () => {
       id: 3,
       icon: "car",
       title: "À emporter (DRIVE) :",
-      description: "Récupérez votre commande vous même chez le vendeur",
+      description: "Récupérez votre commande vous-même chez le vendeur",
       color: COLORS.secondary,
     },
   ];
 
-  const renderIcon = (iconName, iconFamily, size = 24, color = COLORS.white) => {
-    switch (iconFamily) {
-      case "MaterialIcons":
-        return <MaterialIcons name={iconName} size={size} color={color} />;
-      case "FontAwesome5":
-        return <FontAwesome5 name={iconName} size={size} color={color} />;
-      case "AntDesign":
-        return <AntDesign name={iconName} size={size} color={color} />;
-      default:
-        return <FontAwesome5 name={iconName} size={size} color={color} />;
-    }
-  };
-
-  const CategoryCard = ({ category }) => (
-    <TouchableOpacity
-      style={[
-        styles.categoryCard,
-        selectedCategory === category.id && styles.categoryCardSelected,
-      ]}
-      onPress={() => setSelectedCategory(category.id)}
-    >
-      <LinearGradient
-        colors={[category.color, `${category.color}CC`]}
-        style={styles.categoryGradient}
-      >
-        <View style={styles.categoryIcon}>
-          {renderIcon(category.icon, category.iconFamily, 28)}
-        </View>
-        <Text style={styles.categoryName}>{category.name}</Text>
-        <Text style={styles.categoryCount}>{category.count}</Text>
-      </LinearGradient>
-    </TouchableOpacity>
-  );
-
-  const StoreCard = ({ store }) => (
-    <TouchableOpacity style={styles.storeCard}>
-      <View style={styles.storeImageContainer}>
-        <Image source={{ uri: store.image }} style={styles.storeImage} />
-        <View style={[styles.statusBadge, { backgroundColor: store.isOpen ? COLORS.success : COLORS.error }]}>
-          <Text style={styles.statusText}>{store.isOpen ? "Ouvert" : "Fermé"}</Text>
-        </View>
-      </View>
-      
-      <View style={styles.storeInfo}>
-        <Text style={styles.storeName}>{store.name}</Text>
-        <Text style={styles.storeCategory}>{store.category}</Text>
-        
-        <View style={styles.storeDetails}>
-          <View style={styles.ratingContainer}>
-            <AntDesign name="star" size={14} color="#FFD700" />
-            <Text style={styles.ratingText}>{store.rating}</Text>
-          </View>
-          
-          <View style={styles.deliveryInfo}>
-            <MaterialIcons name="access-time" size={14} color={COLORS.gray} />
-            <Text style={styles.deliveryText}>{store.deliveryTime}</Text>
-          </View>
-          
-          <View style={styles.feeInfo}>
-            <MaterialIcons name="delivery-dining" size={14} color={COLORS.gray} />
-            <Text style={styles.feeText}>{store.deliveryFee}</Text>
-          </View>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-
-  const SearchBar = () => (
-    <View style={styles.searchContainer}>
-      <View style={styles.searchBar}>
-        <MaterialIcons name="search" size={20} color={COLORS.gray} />
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Rechercher un restaurant, magasin..."
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          placeholderTextColor={COLORS.gray}
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={() => setSearchQuery("")}>
-            <MaterialIcons name="clear" size={20} color={COLORS.gray} />
-          </TouchableOpacity>
-        )}
-      </View>
-    </View>
-  );
-
-  const QuickActions = () => (
-    <View style={styles.quickActionsContainer}>
-      <Text style={styles.sectionTitle}>Actions rapides</Text>
-      <View style={styles.quickActions}>
-        <TouchableOpacity style={styles.quickAction}>
-          <MaterialIcons name="local-offer" size={24} color={COLORS.secondary} />
-          <Text style={styles.quickActionText}>Promotions</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.quickAction}>
-          <MaterialIcons name="favorite" size={24} color={COLORS.error} />
-          <Text style={styles.quickActionText}>Favoris</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.quickAction}>
-          <MaterialIcons name="history" size={24} color={COLORS.primary} />
-          <Text style={styles.quickActionText}>Historique</Text>
-        </TouchableOpacity>
-        
-        <TouchableOpacity style={styles.quickAction}>
-          <MaterialIcons name="local-pharmacy" size={24} color={COLORS.success} />
-          <Text style={styles.quickActionText}>Urgence</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
+  // --- Conditional Rendering based on Authentication ---
   if (!isAuthenticated) {
     return (
       <View style={styles.container}>
-        <Header title="Marketplace" />
+        {/* Header with cart count (even if user is not authenticated, show general cart state) */}
+        <Header
+          title="Marketplace"
+          cartItemCount={getCartItemsCount()}
+          onCartPress={() => Alert.alert("Panier", "Veuillez vous connecter pour gérer votre panier.")}
+        />
 
         <ScrollView
           style={styles.scrollView}
@@ -347,9 +365,15 @@ const MarcherScreen = () => {
     );
   }
 
+  // --- Authenticated View ---
   return (
     <View style={styles.container}>
-      <Header title="Marketplace" />
+      {/* Header with cart count for authenticated user */}
+      <Header
+        title="Marketplace"
+        cartItemCount={getCartItemsCount()}
+        onCartPress={() => Alert.alert("Panier", "Naviguer vers l'écran du panier.")} // Placeholder for navigation
+      />
 
       <ScrollView
         style={styles.scrollView}
@@ -358,9 +382,12 @@ const MarcherScreen = () => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        <SearchBar />
-        
-        <QuickActions />
+        <SearchBar
+          searchQuery={searchQuery}
+          setSearchQuery={setSearchQuery}
+        />
+
+        <QuickActions /> {/* No props needed as COLORS etc. are in scope */}
 
         <View style={styles.categoriesSection}>
           <Text style={styles.sectionTitle}>Catégories</Text>
@@ -369,7 +396,13 @@ const MarcherScreen = () => {
             showsHorizontalScrollIndicator={false}
             data={categories}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <CategoryCard category={item} />}
+            renderItem={({ item }) => (
+              <CategoryCard
+                category={item}
+                selectedCategory={selectedCategory}
+                setSelectedCategory={setSelectedCategory}
+              />
+            )}
             contentContainerStyle={styles.categoriesList}
           />
         </View>
@@ -381,7 +414,7 @@ const MarcherScreen = () => {
               <Text style={styles.viewAllText}>Voir tout</Text>
             </TouchableOpacity>
           </View>
-          
+
           <FlatList
             data={popularStores}
             keyExtractor={(item) => item.id}
@@ -415,6 +448,7 @@ const MarcherScreen = () => {
   );
 };
 
+// --- Stylesheet ---
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -537,6 +571,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     fontSize: 16,
     color: COLORS.text,
+    minHeight: Platform.OS === 'ios' ? 30 : 40,
+    paddingVertical: Platform.OS === 'ios' ? 0 : 0,
   },
   quickActionsContainer: {
     paddingHorizontal: 20,
