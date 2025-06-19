@@ -8,6 +8,12 @@ import { CartProvider } from "./app/context/CartContext";
 import { AuthProvider } from "./app/context/AuthContext";
 
 export default function App() {
+
+
+
+  let nom = "Samira";
+  console.log("Hello " + nom);
+
   const [isSplashVisible, setSplashVisible] = useState(true);
   
   useEffect(() => {

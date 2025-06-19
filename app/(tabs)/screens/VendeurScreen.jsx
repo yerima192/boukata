@@ -27,6 +27,7 @@ const COLORS = {
   success: "#4CAF50",
   error: "#F44336",
   purple: "#8E44AD",
+  // abassa
 };
 
 const SHADOWS = {
