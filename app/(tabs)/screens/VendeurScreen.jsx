@@ -85,7 +85,7 @@ const FeaturesTab = ({ features }) => (
       ))}
     </View>
   </View>
-);
+);     
 
 // StepsTab component
 const StepsTab = ({ steps }) => (
