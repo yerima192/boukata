@@ -10,10 +10,10 @@ import {
   Alert,
   Linking,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons, FontAwesome5 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import { useRouter } from "expo-router";
 
 const COLORS = {
   primary: "#010080",
@@ -120,6 +120,7 @@ const emergencyNumbers = [
 ];
 
 const PharmaciesGardeScreen = () => {
+  const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState("all");
 
@@ -303,7 +304,13 @@ const PharmaciesGardeScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Pharmacies de Garde" showSearch={false} />
+      <SafeAreaView style={styles.header}>
+        <TouchableOpacity onPress={() => router.back()}>
+          <MaterialIcons name="arrow-back" size={24} color={COLORS.text} />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Pharmacies de Garde</Text>
+        <View style={{ width: 24 }} />
+      </SafeAreaView>
 
       <ScrollView
         style={styles.scrollView}
@@ -318,8 +325,8 @@ const PharmaciesGardeScreen = () => {
           style={styles.headerInfo}
         >
           <MaterialIcons name="local-pharmacy" size={40} color={COLORS.white} />
-          <Text style={styles.headerTitle}>Pharmacies de Garde</Text>
-          <Text style={styles.headerSubtitle}>
+          <Text style={styles.headerInfoTitle}>Pharmacies de Garde</Text>
+          <Text style={styles.headerInfoSubtitle}>
             Trouvez une pharmacie ouverte près de chez vous
           </Text>
         </LinearGradient>
@@ -374,8 +381,6 @@ const PharmaciesGardeScreen = () => {
             </View>
           </View>
         </View>
-
-        <Footer />
       </ScrollView>
     </View>
   );
@@ -386,6 +391,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.background,
   },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    backgroundColor: COLORS.white,
+    ...SHADOWS.small,
+  },
+  headerTitle: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: COLORS.text,
+  },
   scrollView: {
     flex: 1,
   },
@@ -394,14 +413,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 20,
   },
-  headerTitle: {
+  headerInfoTitle: {
     fontSize: 24,
     fontWeight: "bold",
     color: COLORS.white,
     marginTop: 10,
     marginBottom: 5,
   },
-  headerSubtitle: {
+  headerInfoSubtitle: {
     fontSize: 14,
     color: "rgba(255,255,255,0.9)",
     textAlign: "center",

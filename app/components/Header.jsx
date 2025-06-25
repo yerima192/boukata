@@ -14,7 +14,8 @@ import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
-import Sidebar from "./Sidebar"; // Assuming Sidebar is also a separate component
+import { useRouter } from "expo-router";
+import Sidebar from "./Sidebar";
 
 const { width } = Dimensions.get("window");
 
@@ -38,9 +39,6 @@ const SHADOWS = {
   },
 };
 
-// --- HOISTED COMPONENTS START HERE ---
-
-// SearchModal component (moved outside Header)
 const SearchModal = ({
   searchModalOpen,
   setSearchModalOpen,
@@ -70,7 +68,7 @@ const SearchModal = ({
             placeholder="Rechercher des produits, services..."
             placeholderTextColor={COLORS.gray}
             value={searchQuery}
-            onChangeText={setSearchQuery} // Direct setter works fine here
+            onChangeText={setSearchQuery}
             autoFocus={true}
             onSubmitEditing={handleSearch}
           />
@@ -84,23 +82,30 @@ const SearchModal = ({
   </Modal>
 );
 
-// --- HOISTED COMPONENTS END HERE ---
-
-
 const Header = ({ title = "Boukata-Ta", showSearch = true, showCart = true }) => {
+  const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchModalOpen, setSearchModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   
   const { getCartItemsCount } = useCart();
-  const { isAuthenticated, user } = useAuth(); // isAuthenticated and user are not used in this component.
+  const { isAuthenticated, user } = useAuth();
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
       console.log("Recherche:", searchQuery);
       setSearchModalOpen(false);
-      setSearchQuery(""); // Clear search query after search
+      setSearchQuery("");
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
     }
+  };
+
+  const handleCartPress = () => {
+    router.push("/(tabs)/Panier");
+  };
+
+  const handleSearchPress = () => {
+    router.push("/search");
   };
 
   return (
@@ -126,14 +131,14 @@ const Header = ({ title = "Boukata-Ta", showSearch = true, showCart = true }) =>
               {showSearch && (
                 <TouchableOpacity 
                   style={styles.actionButton} 
-                  onPress={() => setSearchModalOpen(true)}
+                  onPress={handleSearchPress}
                 >
                   <Ionicons name="search" size={22} color={COLORS.white} />
                 </TouchableOpacity>
               )}
               
               {showCart && (
-                <TouchableOpacity style={styles.cartButton}>
+                <TouchableOpacity style={styles.cartButton} onPress={handleCartPress}>
                   <MaterialIcons name="shopping-cart" size={22} color={COLORS.white} />
                   {getCartItemsCount() > 0 && (
                     <View style={styles.cartBadge}>
@@ -148,7 +153,7 @@ const Header = ({ title = "Boukata-Ta", showSearch = true, showCart = true }) =>
           {showSearch && (
             <TouchableOpacity 
               style={styles.searchBar} 
-              onPress={() => setSearchModalOpen(true)}
+              onPress={handleSearchPress}
             >
               <Ionicons name="search" size={18} color={COLORS.gray} />
               <Text style={styles.searchPlaceholder}>
@@ -164,7 +169,6 @@ const Header = ({ title = "Boukata-Ta", showSearch = true, showCart = true }) =>
         onClose={() => setSidebarOpen(false)} 
       />
       
-      {/* Render the hoisted SearchModal component */}
       <SearchModal 
         searchModalOpen={searchModalOpen}
         setSearchModalOpen={setSearchModalOpen}
@@ -247,7 +251,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "flex-start",
-    paddingTop: 100, // Adjusted to appear below the header
+    paddingTop: 100,
   },
   searchModalContent: {
     backgroundColor: COLORS.white,

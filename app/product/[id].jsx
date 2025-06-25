@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useCart } from "../context/CartContext";
+import { useLocalSearchParams, useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -46,12 +47,47 @@ const SHADOWS = {
   },
 };
 
-const ProductDetailScreen = ({ route, navigation }) => {
-  const { product } = route.params;
+// Données de produits simulées
+const productsData = {
+  "1": {
+    id: "1",
+    name: "iPhone 15 Pro Max",
+    price: 1299.99,
+    discount: 15,
+    image: "https://images.pexels.com/photos/592750/pexels-photo-592750.jpeg?auto=compress&cs=tinysrgb&w=400",
+    category: "Électronique",
+    isPromo: true,
+    description: "Le dernier iPhone avec des performances exceptionnelles et un appareil photo professionnel.",
+    rating: 4.8,
+    reviews: 125,
+    inStock: true,
+    features: ["128GB de stockage", "Appareil photo 48MP", "Écran Super Retina XDR", "Puce A17 Pro"]
+  },
+  "2": {
+    id: "2",
+    name: "Samsung Galaxy S24",
+    price: 999.99,
+    discount: 20,
+    image: "https://images.pexels.com/photos/404280/pexels-photo-404280.jpeg?auto=compress&cs=tinysrgb&w=400",
+    category: "Électronique",
+    isPromo: true,
+    description: "Smartphone Android haut de gamme avec intelligence artificielle intégrée.",
+    rating: 4.6,
+    reviews: 89,
+    inStock: true,
+    features: ["256GB de stockage", "Écran Dynamic AMOLED", "Batterie 4000mAh", "5G"]
+  }
+};
+
+const ProductDetailScreen = () => {
+  const { id } = useLocalSearchParams();
+  const router = useRouter();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+
+  const product = productsData[id] || productsData["1"];
 
   const productImages = [
     product.image,
@@ -72,7 +108,7 @@ const ProductDetailScreen = ({ route, navigation }) => {
 
   const handleBuyNow = () => {
     handleAddToCart();
-    navigation.navigate("Cart");
+    router.push("/checkout");
   };
 
   return (
@@ -80,7 +116,7 @@ const ProductDetailScreen = ({ route, navigation }) => {
       <SafeAreaView style={styles.header}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => router.back()}
         >
           <MaterialIcons name="arrow-back" size={24} color={COLORS.text} />
         </TouchableOpacity>
@@ -161,19 +197,17 @@ const ProductDetailScreen = ({ route, navigation }) => {
                   key={star}
                   name="star"
                   size={16}
-                  color={star <= 4 ? "#FFD700" : COLORS.lightGray}
+                  color={star <= Math.floor(product.rating) ? "#FFD700" : COLORS.lightGray}
                 />
               ))}
             </View>
-            <Text style={styles.ratingText}>4.0 (125 avis)</Text>
+            <Text style={styles.ratingText}>{product.rating} ({product.reviews} avis)</Text>
           </View>
 
           <View style={styles.descriptionSection}>
             <Text style={styles.sectionTitle}>Description</Text>
             <Text style={styles.description}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod 
-              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim 
-              veniam, quis nostrud exercitation ullamco laboris.
+              {product.description}
             </Text>
           </View>
 
@@ -185,14 +219,24 @@ const ProductDetailScreen = ({ route, navigation }) => {
             </View>
             <View style={styles.featureItem}>
               <Text style={styles.featureLabel}>Disponibilité:</Text>
-              <Text style={[styles.featureValue, { color: COLORS.success }]}>
-                En stock
+              <Text style={[styles.featureValue, { color: product.inStock ? COLORS.success : COLORS.error }]}>
+                {product.inStock ? "En stock" : "Rupture de stock"}
               </Text>
             </View>
             <View style={styles.featureItem}>
               <Text style={styles.featureLabel}>Livraison:</Text>
               <Text style={styles.featureValue}>24-48h</Text>
             </View>
+            
+            {product.features && (
+              <View style={styles.featuresList}>
+                {product.features.map((feature, index) => (
+                  <View key={index} style={styles.featureTag}>
+                    <Text style={styles.featureTagText}>{feature}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
           </View>
 
           <View style={styles.quantitySection}>
@@ -380,6 +424,23 @@ const styles = StyleSheet.create({
   featureValue: {
     fontSize: 14,
     color: COLORS.gray,
+  },
+  featuresList: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 10,
+  },
+  featureTag: {
+    backgroundColor: COLORS.lightGray,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 15,
+    marginRight: 8,
+    marginBottom: 8,
+  },
+  featureTagText: {
+    fontSize: 12,
+    color: COLORS.text,
   },
   quantitySection: {
     marginBottom: 20,

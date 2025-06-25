@@ -19,6 +19,7 @@ import {
   AntDesign,
 } from "@expo/vector-icons";
 import { useAuth } from "../context/AuthContext";
+import { useRouter } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -44,6 +45,7 @@ const SHADOWS = {
 };
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const router = useRouter();
   const [expandedOption, setExpandedOption] = useState(null);
   const slideAnimation = useRef(new Animated.Value(isOpen ? 0 : -width * 0.8)).current;
   const { isAuthenticated, user, logout } = useAuth();
@@ -62,7 +64,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       title: "Accueil", 
       icon: "home", 
       iconType: "MaterialIcons",
-      route: "Home"
+      route: "/(tabs)"
     },
     {
       id: "2",
@@ -71,9 +73,9 @@ const Sidebar = ({ isOpen, onClose }) => {
       iconType: "FontAwesome5",
       hasDropdown: true,
       submenu: [
-        { title: "Alimentation", route: "Alimentation" },
-        { title: "Électronique", route: "Electronique" },
-        { title: "Mode", route: "Mode" },
+        { title: "Alimentation", route: "/category/alimentation" },
+        { title: "Électronique", route: "/category/electronique" },
+        { title: "Mode", route: "/category/mode" },
       ]
     },
     {
@@ -81,35 +83,35 @@ const Sidebar = ({ isOpen, onClose }) => {
       title: "Boutiques",
       icon: "shopping-bag",
       iconType: "FontAwesome5",
-      route: "Boutiques"
+      route: "/(tabs)/Achat"
     },
     {
       id: "4",
       title: "Pharmacie",
       icon: "medical-bag",
       iconType: "MaterialCommunityIcons",
-      route: "Pharmacie"
+      route: "/pharmacies-garde"
     },
     {
       id: "5",
       title: "Restaurant",
       icon: "restaurant",
       iconType: "MaterialIcons",
-      route: "Restaurant"
+      route: "/category/alimentation"
     },
     { 
       id: "6", 
       title: "Hôtel", 
       icon: "hotel", 
       iconType: "MaterialIcons",
-      route: "Hotel"
+      route: "/(tabs)/Achat"
     },
     {
       id: "7",
       title: "Pharmacies de garde",
       icon: "local-pharmacy",
       iconType: "MaterialIcons",
-      route: "PharmaciesGarde"
+      route: "/pharmacies-garde"
     },
   ];
 
@@ -141,12 +143,24 @@ const Sidebar = ({ isOpen, onClose }) => {
       toggleDropdown(option.id);
     } else {
       console.log("Navigation vers:", option.route);
+      router.push(option.route);
       onClose();
     }
   };
 
+  const handleSubmenuPress = (submenuItem) => {
+    console.log("Navigation vers:", submenuItem.route);
+    router.push(submenuItem.route);
+    onClose();
+  };
+
   const handleLogout = () => {
     logout();
+    onClose();
+  };
+
+  const handleLoginPress = () => {
+    router.push("/(tabs)/Compte");
     onClose();
   };
 
@@ -179,12 +193,12 @@ const Sidebar = ({ isOpen, onClose }) => {
                 {isAuthenticated ? (
                   <>
                     <Text style={styles.userName}>{user?.name || "Utilisateur"}</Text>
-                    <Text style={styles.userEmail}>{user?.email}</Text>
+                    <Text style={styles.userEmail}>{user?.phone}</Text>
                   </>
                 ) : (
                   <>
                     <Text style={styles.userName}>Bienvenue</Text>
-                    <TouchableOpacity style={styles.loginButton}>
+                    <TouchableOpacity style={styles.loginButton} onPress={handleLoginPress}>
                       <Text style={styles.loginButtonText}>Se connecter</Text>
                     </TouchableOpacity>
                   </>
@@ -233,10 +247,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                       <TouchableOpacity 
                         key={index} 
                         style={styles.submenuItem}
-                        onPress={() => {
-                          console.log("Navigation vers:", submenuItem.route);
-                          onClose();
-                        }}
+                        onPress={() => handleSubmenuPress(submenuItem)}
                       >
                         <Text style={styles.submenuItemText}>{submenuItem.title}</Text>
                       </TouchableOpacity>
